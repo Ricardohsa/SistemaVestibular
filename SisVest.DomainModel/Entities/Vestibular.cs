@@ -20,7 +20,7 @@ namespace SisVest.DomainModel.Entities
         public override bool Equals(object obj)
         {
             var vestibularParam = (Vestibular)obj;
-            if (this.iVestibularId == vestibularParam.iVestibularId && this.sDescricao == vestibularParam.sDescricao)
+            if (this.iVestibularId == vestibularParam.iVestibularId && this.sDescricao == vestibularParam.sDescricao) 
 
                 return true;
 
