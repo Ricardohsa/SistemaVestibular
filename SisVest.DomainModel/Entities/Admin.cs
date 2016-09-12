@@ -21,11 +21,11 @@ namespace SisVest.DomainModel.Entities
         public override bool Equals(object obj)
         {
             var adminParam = (Admin)obj;
-            if (this.iAdminId == adminParam.iAdminId 
-                && this.sLogin == adminParam.sLogin && this.sEmail == adminParam.sEmail)
+            
+            if (this.iAdminId == adminParam.iAdminId || this.sLogin == adminParam.sLogin || this.sEmail == adminParam.sEmail)
 
                 return true;
-            
+
             return false;
         }
 

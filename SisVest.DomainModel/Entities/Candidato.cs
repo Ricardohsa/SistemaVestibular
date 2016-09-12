@@ -33,7 +33,8 @@ namespace SisVest.DomainModel.Entities
         public override bool Equals(object obj)
         {
             var candidatoParam = (Candidato)obj;
-            if (this.iCandidatoId == candidatoParam.iCandidatoId && this.sCpf == candidatoParam.sCpf)
+            if (this.iCandidatoId == candidatoParam.iCandidatoId || this.sCpf ==  candidatoParam.sCpf ||
+                this.sEmail == candidatoParam.sEmail)
 
                 return true;
 

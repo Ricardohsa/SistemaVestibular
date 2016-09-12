@@ -45,12 +45,24 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Entities\AdminTest.cs" />
+    <Compile Include="Entities\CandidatoTest.cs" />
+    <Compile Include="Entities\CursoTest.cs" />
+    <Compile Include="Entities\VestibularTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SisVest.DomainModel\SisVest.DomainModel.csproj">
+      <Project>{4530541b-dd10-4aec-a6c7-4892bd129926}</Project>
+      <Name>SisVest.DomainModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
