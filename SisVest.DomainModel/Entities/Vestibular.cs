@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SisVest.DomainModel.Entities
 {
+    [Table("tbVestibular")]
     public class Vestibular
     {
+        [Key]
         public int iVestibularId { get; set; }
 
         public string sDescricao { get; set; }

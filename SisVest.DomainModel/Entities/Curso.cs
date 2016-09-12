@@ -1,9 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SisVest.DomainModel.Entities
 {
+    [Table("tbCurso")]
     public class Curso
     {
+        [Key]
         public int iCursoId { get; set; }
 
         public string sDescricao { get; set; }
