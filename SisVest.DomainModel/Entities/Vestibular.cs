@@ -11,12 +11,16 @@ namespace SisVest.DomainModel.Entities
         [Key]
         public int iVestibularId { get; set; }
 
+        [Required(ErrorMessage = "Descrição é obirgatória")]
         public string sDescricao { get; set; }
 
+        [Required(ErrorMessage = "Data de Inicio deve ser informada.")]
         public DateTime dtInicioInscricao { get; set; }
 
+        [Required(ErrorMessage = "Data de Final deve ser informada.")]
         public DateTime dtFimInscricao { get; set; }
 
+        [Required(ErrorMessage = "Data da Prova deve ser informada.")]
         public DateTime dtProva { get; set; }
 
         public virtual ICollection<Candidato> CandidatosList { get; set; }

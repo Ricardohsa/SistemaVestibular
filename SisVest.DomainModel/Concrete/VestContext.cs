@@ -13,8 +13,13 @@ namespace SisVest.DomainModel.Concrete
         public VestContext()
             :base("SISVEST")
         {
-
+         
         }
+
+        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        //{
+        //    Database.SetInitializer(new DropCreateDatabaseIfModelChanges<VestContext>()); 
+        //}
 
         public DbSet<Admin> Admins { get; set; }
 
@@ -22,6 +27,6 @@ namespace SisVest.DomainModel.Concrete
 
         public DbSet<Curso> Cursos { get; set; }
 
-        public DbSet<Vestibular> Vestibulates { get; set; }
+        public DbSet<Vestibular> Vestibulares { get; set; }
     }
 }

@@ -55,6 +55,7 @@
     <Compile Include="Abstract\IVestibularRepository.cs" />
     <Compile Include="Concrete\EFAdminRepository.cs" />
     <Compile Include="Concrete\EFCursoRepository.cs" />
+    <Compile Include="Concrete\EFVestibularRepository.cs" />
     <Compile Include="Concrete\VestContext.cs" />
     <Compile Include="Entities\Admin.cs" />
     <Compile Include="Entities\Candidato.cs" />

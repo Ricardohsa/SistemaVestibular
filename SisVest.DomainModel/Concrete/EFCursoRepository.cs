@@ -35,8 +35,7 @@ namespace SisVest.DomainModel.Concrete
         public void Alterar(Curso curso)
         {
             var retorno = from c in cursos
-                          where c.iCursoId.Equals(curso.iCursoId) 
-                          && !c.sDescricao.ToUpper().Equals(curso.sDescricao)
+                          where (c.iCursoId.Equals(curso.iCursoId) || c.sDescricao.ToUpper().Equals(curso.sDescricao))
                           select c;
 
             if (retorno.Count() > 0)

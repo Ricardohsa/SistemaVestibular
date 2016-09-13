@@ -14,12 +14,16 @@ namespace SisVest.DomainModel.Entities
         [Key]
         public int iAdminId { get; set; }
 
+        [Required]
         public string sLogin { get; set; }
 
+        [Required]
         public string sSenha { get; set; }
 
+        [Required]
         public string sNomeTratamento { get; set; }
 
+        [Required]
         public string sEmail { get; set; }
 
         public override bool Equals(object obj)

@@ -15,7 +15,7 @@ namespace SisVest.DomainModel.Abstract
 
         void Alterar(Vestibular vestibular);
 
-        void Excluir(Vestibular vestibular);
+        void Excluir(int  iVestibularId);
 
         IList<Candidato> RetornarCandidatosPorVesntibular(int iVestibularId); 
         
