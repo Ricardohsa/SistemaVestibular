@@ -15,7 +15,7 @@ namespace SisVest.DomainModel.Abstract
 
         void Alterar(Admin admin);
 
-        void Exclir(int iCandidatoID);
+        void Excluir(int iCandidatoID);
 
         Admin Retornar(int id);
 

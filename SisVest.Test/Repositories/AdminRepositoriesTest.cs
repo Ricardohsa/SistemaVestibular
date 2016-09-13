@@ -264,7 +264,7 @@ namespace SisVest.Test.Repository
             
 
             //Ação
-            adminRepository.Exclir(adminInserir.iAdminId);
+            adminRepository.Excluir(adminInserir.iAdminId);
 
             //Assertivas            
             var result = from a in vestContext.Admins
@@ -283,7 +283,7 @@ namespace SisVest.Test.Repository
           
             
             //Ação
-            adminRepository.Exclir(10050);
+            adminRepository.Excluir(10050);
 
             //Assertivas            
             
@@ -317,20 +317,20 @@ namespace SisVest.Test.Repository
         }
 
 
-        //[TestCleanup]
-        //public void LimparCenario()
-        //{
-        //    var adminsParaRemover = from a in vestContext.Admins
-        //                            select a;
+        [TestCleanup]
+        public void LimparCenario()
+        {
+            var adminsParaRemover = from a in vestContext.Admins
+                                    select a;
 
-        //    foreach (var admin in adminsParaRemover)
-        //    {
-        //        vestContext.Admins.Remove(admin);
+            foreach (var admin in adminsParaRemover)
+            {
+                vestContext.Admins.Remove(admin);
 
-        //    }
+            }
 
-        //    vestContext.SaveChanges();
-        //}
+            vestContext.SaveChanges();
+        }
 
 
     }

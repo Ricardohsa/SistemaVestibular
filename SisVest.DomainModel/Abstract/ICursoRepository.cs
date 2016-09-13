@@ -15,7 +15,7 @@ namespace SisVest.DomainModel.Abstract
 
         void Alterar(Curso curso);
 
-        void Excluir(Curso curso);
+        void Excluir(int iCursoId);
 
         Curso Retornar(int iCursoId);
 

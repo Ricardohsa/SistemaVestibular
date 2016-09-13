@@ -33,7 +33,7 @@ namespace SisVest.DomainModel.Concrete
             vestContext.SaveChanges();
         }
 
-        public void Exclir(int iCandidatoID)
+        public void Excluir(int iCandidatoID)
         {
             var result = from a in admins
                 where a.iAdminId.Equals(iCandidatoID)
