@@ -16,10 +16,10 @@ namespace SisVest.DomainModel.Concrete
          
         }
 
-        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        //{
-        //    Database.SetInitializer(new DropCreateDatabaseIfModelChanges<VestContext>()); 
-        //}
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<VestContext>());
+        }
 
         public DbSet<Admin> Admins { get; set; }
 

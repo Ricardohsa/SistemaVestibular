@@ -10,22 +10,22 @@ namespace SisVest.Test.Repositories
     [TestClass]
     public class VestibularRepositories
     {
-        private IVestibularRepository vestibularRepository;
-        private VestContext vestContext = new VestContext();
-        private Vestibular vestibularInserir;
+        private IVestibularRepository _vestibularRepository;
+        private VestContext _vestContext = new VestContext();
+        private Vestibular _vestibularInserir;
 
         [TestInitialize]
         public void InicializarTeste()
         {
-            vestibularRepository = new EFVestibularRepository(vestContext);
+            _vestibularRepository = new EfVestibularRepository(_vestContext);
 
-            vestibularInserir = (new Vestibular()
+            _vestibularInserir = (new Vestibular()
             {
 
-                dtInicioInscricao = new DateTime(2016, 3, 25),
-                dtFimInscricao = new DateTime(2016, 3, 25).AddDays(5),
-                dtProva = new DateTime(2016, 3, 25).AddDays(7),
-                sDescricao = "Vestibular 2017"
+                DtInicioInscricao = new DateTime(2016, 3, 25),
+                DtFimInscricao = new DateTime(2016, 3, 25).AddDays(5),
+                DtProva = new DateTime(2016, 3, 25).AddDays(7),
+                SDescricao = "Vestibular 2017"
 
             });
         }
@@ -34,19 +34,19 @@ namespace SisVest.Test.Repositories
         public void Pode_Consultar_Usando_LINQ_Repositorio_Test()
         {
             //Ambiente    
-            vestContext.Vestibulares.Add(vestibularInserir);
-            vestContext.SaveChanges();
+            _vestContext.Vestibulares.Add(_vestibularInserir);
+            _vestContext.SaveChanges();
             //Ação
 
-            var vestibulares = vestibularRepository.vestibulares;
+            var vestibulares = _vestibularRepository.Vestibulares;
 
             var retorno = (from a in vestibulares
-                           where a.sDescricao.Equals(vestibularInserir.sDescricao)
+                           where a.SDescricao.Equals(_vestibularInserir.SDescricao)
                            select a).FirstOrDefault();
 
             //Assertivas
             Assert.IsInstanceOfType(vestibulares, typeof(IQueryable<Vestibular>));
-            Assert.AreEqual(retorno, vestibularInserir);
+            Assert.AreEqual(retorno, _vestibularInserir);
 
         }
 
@@ -58,15 +58,15 @@ namespace SisVest.Test.Repositories
 
             //Ação
 
-            vestibularRepository.Inserir(vestibularInserir);
-            vestContext.SaveChanges();
+            _vestibularRepository.Inserir(_vestibularInserir);
+            _vestContext.SaveChanges();
 
-            var retorno = (from a in vestibularRepository.vestibulares
-                           where a.sDescricao.Equals(vestibularInserir.sDescricao)
+            var retorno = (from a in _vestibularRepository.Vestibulares
+                           where a.SDescricao.Equals(_vestibularInserir.SDescricao)
                            select a).FirstOrDefault();
 
             //Assertivas            
-            Assert.AreEqual(retorno, vestibularInserir);
+            Assert.AreEqual(retorno, _vestibularInserir);
 
         }
 
@@ -78,16 +78,16 @@ namespace SisVest.Test.Repositories
 
             var vestibularInserir2 = (new Vestibular()
             {
-                dtInicioInscricao = new DateTime(2016, 3, 25),
-                dtFimInscricao = new DateTime(2016, 3, 25).AddDays(5),
-                dtProva = new DateTime(2016, 3, 25).AddDays(7),
-                sDescricao = vestibularInserir.sDescricao
+                DtInicioInscricao = new DateTime(2016, 3, 25),
+                DtFimInscricao = new DateTime(2016, 3, 25).AddDays(5),
+                DtProva = new DateTime(2016, 3, 25).AddDays(7),
+                SDescricao = _vestibularInserir.SDescricao
 
             });
 
-            vestibularRepository.Inserir(vestibularInserir);
+            _vestibularRepository.Inserir(_vestibularInserir);
             //Ação            
-            vestibularRepository.Inserir(vestibularInserir2);
+            _vestibularRepository.Inserir(vestibularInserir2);
 
 
             //Assertivas         
@@ -102,10 +102,10 @@ namespace SisVest.Test.Repositories
 
             var vestibularInserir2 = (new Vestibular()
             {
-                sDescricao = "20122"
+                SDescricao = "20122"
             });
 
-            vestibularRepository.Inserir(vestibularInserir2);
+            _vestibularRepository.Inserir(vestibularInserir2);
             //Ação            
 
 
@@ -118,26 +118,26 @@ namespace SisVest.Test.Repositories
         public void Pode_Altera_Test()
         {
             //Ambiente    
-            var descriaoEsperada = vestibularInserir.sDescricao;
+            var descriaoEsperada = _vestibularInserir.SDescricao;
 
-            vestibularRepository.Inserir(vestibularInserir);
+            _vestibularRepository.Inserir(_vestibularInserir);
 
 
-            var vestibularAlterar = (from a in vestibularRepository.vestibulares
-                                     where a.iVestibularId == vestibularInserir.iVestibularId
+            var vestibularAlterar = (from a in _vestibularRepository.Vestibulares
+                                     where a.IVestibularId == _vestibularInserir.IVestibularId
                                      select a).FirstOrDefault();
 
-            vestibularAlterar.sDescricao = "Vestibular 2012";
+            vestibularAlterar.SDescricao = "Vestibular 2012";
 
             //Ação
-            vestibularRepository.Alterar(vestibularAlterar);
+            _vestibularRepository.Alterar(vestibularAlterar);
 
-            var retorno = (from a in vestibularRepository.vestibulares
-                           where a.iVestibularId.Equals(vestibularInserir.iVestibularId)
+            var retorno = (from a in _vestibularRepository.Vestibulares
+                           where a.IVestibularId.Equals(_vestibularInserir.IVestibularId)
                            select a).FirstOrDefault();
             //Assertivas
-            Assert.AreEqual(retorno.iVestibularId, vestibularAlterar.iVestibularId);
-            Assert.AreNotEqual(descriaoEsperada, vestibularAlterar.sDescricao);
+            Assert.AreEqual(retorno.IVestibularId, vestibularAlterar.IVestibularId);
+            Assert.AreNotEqual(descriaoEsperada, vestibularAlterar.SDescricao);
         }
 
 
@@ -146,16 +146,16 @@ namespace SisVest.Test.Repositories
         public void Nao_Pode_Alterar_Vestibular_Com_Mesma_Descricao_Test()
         {
             //Ambiente
-            vestibularRepository.Inserir(vestibularInserir);
+            _vestibularRepository.Inserir(_vestibularInserir);
 
-            var vestibularAlterar = (from a in vestibularRepository.vestibulares
-                                     where a.iVestibularId == vestibularInserir.iVestibularId
+            var vestibularAlterar = (from a in _vestibularRepository.Vestibulares
+                                     where a.IVestibularId == _vestibularInserir.IVestibularId
                                      select a).FirstOrDefault();
 
-            vestibularAlterar.sDescricao = "Vestibular 2017";
+            vestibularAlterar.SDescricao = "Vestibular 2017";
 
             //Ação
-            vestibularRepository.Alterar(vestibularAlterar);
+            _vestibularRepository.Alterar(vestibularAlterar);
 
             //Assertivas      
 
@@ -166,24 +166,24 @@ namespace SisVest.Test.Repositories
         public void Nao_Pode_Alterar_Curso_Com_Mesma_Descricao_Ja_Persistida_Test()
         {
             //Ambiente
-            vestibularRepository.Inserir(vestibularInserir);
+            _vestibularRepository.Inserir(_vestibularInserir);
 
             var vestibularInserir2 = new Vestibular()
             {
-                sDescricao = "2019"
+                SDescricao = "2019"
             };
 
-            vestibularRepository.Inserir(vestibularInserir2);
+            _vestibularRepository.Inserir(vestibularInserir2);
 
-            var cursoAlterar = (from c in vestibularRepository.vestibulares
-                                where c.iVestibularId.Equals(vestibularInserir.iVestibularId)
+            var cursoAlterar = (from c in _vestibularRepository.Vestibulares
+                                where c.IVestibularId.Equals(_vestibularInserir.IVestibularId)
                                 select c).FirstOrDefault();
 
-            cursoAlterar.sDescricao = vestibularInserir2.sDescricao;
+            cursoAlterar.SDescricao = vestibularInserir2.SDescricao;
 
             //Ação
 
-            vestibularRepository.Alterar(cursoAlterar);
+            _vestibularRepository.Alterar(cursoAlterar);
             //Assertivas      
 
         }
@@ -193,15 +193,15 @@ namespace SisVest.Test.Repositories
         public void Pode_Excluir_Test()
         {
             //Ambiente
-            vestibularRepository.Inserir(vestibularInserir);
+            _vestibularRepository.Inserir(_vestibularInserir);
 
 
             //Ação
-            vestibularRepository.Excluir(vestibularInserir.iVestibularId);
+            _vestibularRepository.Excluir(_vestibularInserir.IVestibularId);
 
             //Assertivas            
-            var result = from c in vestContext.Vestibulares
-                         where c.iVestibularId.Equals(vestibularInserir.iVestibularId)
+            var result = from c in _vestContext.Vestibulares
+                         where c.IVestibularId.Equals(_vestibularInserir.IVestibularId)
                          select c;
 
             Assert.AreEqual(0, result.Count());
@@ -216,7 +216,7 @@ namespace SisVest.Test.Repositories
 
 
             //Ação
-            vestibularRepository.Excluir(10050);
+            _vestibularRepository.Excluir(10050);
 
             //Assertivas            
 
@@ -228,55 +228,55 @@ namespace SisVest.Test.Repositories
         public void Pode_Retornar_Candidatos_Por_Vestibular()
         {
             //Ambiente
-            vestContext.Vestibulares.Add(vestibularInserir);
+            _vestContext.Vestibulares.Add(_vestibularInserir);
 
             //Criar Curso
             var cursoInserir = new Curso()
             {
-                sDescricao = "Analise de Sistemas",
-                iVagas = 100
+                SDescricao = "Analise de Sistemas",
+                IVagas = 100
             };
 
-            vestContext.Cursos.Add(cursoInserir);
-            vestContext.SaveChanges();
+            _vestContext.Cursos.Add(cursoInserir);
+            _vestContext.SaveChanges();
 
 
             //Criar Candidato1
             var candidato = new Candidato()
             {
                 Curso = cursoInserir,
-                dtNascimento = new DateTime(1982, 4, 11),
-                sCpf = "295.895.638.56",
-                sEmail = "r.humberto.sa@gmail.com",
-                Vestibular = vestibularInserir,
-                sNome = "Ricardo",
-                sSenha = "123",
-                sSexo = "M",
-                sTelefone = "11"
+                DtNascimento = new DateTime(1982, 4, 11),
+                SCpf = "295.895.638.56",
+                SEmail = "r.humberto.sa@gmail.com",
+                Vestibular = _vestibularInserir,
+                SNome = "Ricardo",
+                SSenha = "123",
+                SSexo = "M",
+                STelefone = "11"
             };
 
-            vestContext.Candidatos.Add(candidato);
-            vestContext.SaveChanges();
+            _vestContext.Candidatos.Add(candidato);
+            _vestContext.SaveChanges();
 
             //Criar Candidato1
             var candidato1 = new Candidato()
             {
                 Curso = cursoInserir,
-                dtNascimento = new DateTime(1982, 4, 28),
-                sCpf = "297.496.428.13",
-                sEmail = "michelle.sa@gmail.com",
-                Vestibular = vestibularInserir,
-                sNome = "Michelle",
-                sSenha = "123",
-                sSexo = "F",
-                sTelefone = "11"
+                DtNascimento = new DateTime(1982, 4, 28),
+                SCpf = "297.496.428.13",
+                SEmail = "michelle.sa@gmail.com",
+                Vestibular = _vestibularInserir,
+                SNome = "Michelle",
+                SSenha = "123",
+                SSexo = "F",
+                STelefone = "11"
             };
 
-            vestContext.Candidatos.Add(candidato1);
-            vestContext.SaveChanges();
+            _vestContext.Candidatos.Add(candidato1);
+            _vestContext.SaveChanges();
             //Ação
 
-            var candidatos = vestibularRepository.RetornarCandidatosPorVesntibular(vestibularInserir.iVestibularId);
+            var candidatos = _vestibularRepository.RetornarCandidatosPorVesntibular(_vestibularInserir.IVestibularId);
 
             //Assertivas            
             Assert.AreEqual(2,candidatos.Count);
@@ -291,55 +291,55 @@ namespace SisVest.Test.Repositories
         public void Nao_Pode_Excluir_Candidato_Algum_Inscrito_Test()
         {
             //Ambiente
-            vestContext.Vestibulares.Add(vestibularInserir);
+            _vestContext.Vestibulares.Add(_vestibularInserir);
 
             //Criar Curso
             var cursoInserir = new Curso()
             {
-                sDescricao = "Analise de Sistemas",
-                iVagas = 100
+                SDescricao = "Analise de Sistemas",
+                IVagas = 100
             };
 
-            vestContext.Cursos.Add(cursoInserir);
-            vestContext.SaveChanges();
+            _vestContext.Cursos.Add(cursoInserir);
+            _vestContext.SaveChanges();
 
 
             //Criar Candidato1
             var candidato = new Candidato()
             {
                 Curso = cursoInserir,
-                dtNascimento = new DateTime(1982, 4, 11),
-                sCpf = "295.895.638.56",
-                sEmail = "r.humberto.sa@gmail.com",
-                Vestibular = vestibularInserir,
-                sNome = "Ricardo",
-                sSenha = "123",
-                sSexo = "M",
-                sTelefone = "11"
+                DtNascimento = new DateTime(1982, 4, 11),
+                SCpf = "295.895.638.56",
+                SEmail = "r.humberto.sa@gmail.com",
+                Vestibular = _vestibularInserir,
+                SNome = "Ricardo",
+                SSenha = "123",
+                SSexo = "M",
+                STelefone = "11"
             };
 
-            vestContext.Candidatos.Add(candidato);
-            vestContext.SaveChanges();
+            _vestContext.Candidatos.Add(candidato);
+            _vestContext.SaveChanges();
 
             //Criar Candidato1
             var candidato1 = new Candidato()
             {
                 Curso = cursoInserir,
-                dtNascimento = new DateTime(1982, 4, 28),
-                sCpf = "297.496.428.13",
-                sEmail = "michelle.sa@gmail.com",
-                Vestibular = vestibularInserir,
-                sNome = "Michelle",
-                sSenha = "123",
-                sSexo = "F",
-                sTelefone = "11"
+                DtNascimento = new DateTime(1982, 4, 28),
+                SCpf = "297.496.428.13",
+                SEmail = "michelle.sa@gmail.com",
+                Vestibular = _vestibularInserir,
+                SNome = "Michelle",
+                SSenha = "123",
+                SSexo = "F",
+                STelefone = "11"
             };
 
-            vestContext.Candidatos.Add(candidato1);
-            vestContext.SaveChanges();
+            _vestContext.Candidatos.Add(candidato1);
+            _vestContext.SaveChanges();
 
             //Ação
-            vestibularRepository.Excluir(candidato1.iCandidatoId);
+            _vestibularRepository.Excluir(candidato1.ICandidatoId);
 
             //Assertivas            
 
@@ -348,16 +348,16 @@ namespace SisVest.Test.Repositories
         [TestCleanup]
         public void LimparCenario()
         {
-            var VestibuarParaRemover = from a in vestContext.Vestibulares
+            var vestibuarParaRemover = from a in _vestContext.Vestibulares
                                        select a;
 
-            foreach (var vestibular in VestibuarParaRemover)
+            foreach (var vestibular in vestibuarParaRemover)
             {
-                vestContext.Vestibulares.Remove(vestibular);
+                _vestContext.Vestibulares.Remove(vestibular);
 
             }
 
-            vestContext.SaveChanges();
+            _vestContext.SaveChanges();
         }
     }
 }

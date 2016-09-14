@@ -1,0 +1,48 @@
+﻿@using SisVest.DomainModel.Entities
+@model List<SisVest.WebUI.Models.CursoModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<h2>Listagem de Cursos</h2>
+@if (TempData["Mensagem"] != null)
+{
+    <p><strong>@TempData["Mensagem"]</strong> </p>
+}
+
+<table>
+    <tr>
+        <th><strong>Curso</strong></th>
+        <th><strong>Nº Vagas</strong></th>
+        <th><strong>-   Nº Candidatos Inscritos</strong></th>
+        <th><strong>-   Nº Candidatos Aprovados</strong></th>
+        <th><strong>Editar</strong></th>
+        <th><strong>Excluir</strong></th>
+    </tr>
+    
+    @foreach (var curso in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(c => curso.SDescricao)
+            </td>
+            <td>
+                @Html.DisplayFor(c => curso.IVagas)
+            </td>
+            <td>
+                @Html.DisplayFor(c => curso.iTotalCandidatos)
+            </td>
+            <td>
+                @Html.DisplayFor(c => curso.iTotalCandidatosAprovados)
+            </td>
+            <td>
+                @Html.ActionLink("Alterar","Alterar", new {id=curso.ICursoId});
+            </td>
+            <td>
+                @Html.ActionLink("Excluir", "Excluir", new { id = curso.ICursoId });
+            </td>
+        </tr>
+    }
+</table>

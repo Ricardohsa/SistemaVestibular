@@ -8,16 +8,16 @@ namespace SisVest.Test.Entities
     [TestClass]
     public class CursoTest
     {
-        public Curso curso1, curso2;       
+        public Curso Curso1, Curso2;       
 
         [TestInitialize]
         public void InicializarTeste()
         {
-            curso1 = new Curso()
+            Curso1 = new Curso()
             {
-                iCursoId = 1,
-                iVagas = 10,                
-                sDescricao = "Analise de Sistemas"
+                ICursoId = 1,
+                IVagas = 10,                
+                SDescricao = "Analise de Sistemas"
                 
             };
         }
@@ -25,30 +25,30 @@ namespace SisVest.Test.Entities
         [TestMethod]
         public void Garantir_Que_2_Cursos_Sao_Iguai_Quando_Tem_Mesmo_Id()
         {
-            curso2 = new Curso()
+            Curso2 = new Curso()
             {
-                iCursoId = 1,
-                iVagas = 10,                
-                sDescricao = "Analise de Sistemas"
+                ICursoId = 1,
+                IVagas = 10,                
+                SDescricao = "Analise de Sistemas"
             };
 
-            Assert.AreEqual(curso1.iCursoId, curso2.iCursoId);
-            Assert.AreEqual(curso1, curso2);
+            Assert.AreEqual(Curso1.ICursoId, Curso2.ICursoId);
+            Assert.AreEqual(Curso1, Curso2);
         }
 
         [TestMethod]
         public void Garantir_Que_2_Cursos_Sao_Iguai_Quando_Tem_Mesmo_Id_Descricao()
         {
-            curso2 = new Curso()
+            Curso2 = new Curso()
             {
-                iCursoId = 1,
-                iVagas = 1000,
-                sDescricao = "Analise de Sistemas"
+                ICursoId = 1,
+                IVagas = 1000,
+                SDescricao = "Analise de Sistemas"
             };
 
-            Assert.AreEqual(curso1.iCursoId, curso2.iCursoId);
-            Assert.AreEqual(curso1.sDescricao, curso2.sDescricao);
-            Assert.AreEqual(curso1, curso2);
+            Assert.AreEqual(Curso1.ICursoId, Curso2.ICursoId);
+            Assert.AreEqual(Curso1.SDescricao, Curso2.SDescricao);
+            Assert.AreEqual(Curso1, Curso2);
         }
     }
 }

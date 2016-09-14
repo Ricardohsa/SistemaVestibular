@@ -11,21 +11,21 @@ using SisVest.DomainModel.Entities;
 
 namespace SisVest.DomainModel.Concrete
 {
-    public class EFVestibularRepository : IVestibularRepository
+    public class EfVestibularRepository : IVestibularRepository
     {
-        private VestContext vestContext;
+        private VestContext _vestContext;
 
-        public EFVestibularRepository(VestContext context)
+        public EfVestibularRepository(VestContext context)
         {
-            vestContext = context;
+            _vestContext = context;
         }
 
-        public IQueryable<Vestibular> vestibulares => vestContext.Vestibulares.AsQueryable();
+        public IQueryable<Vestibular> Vestibulares => _vestContext.Vestibulares.AsQueryable();
 
         public void Inserir(Vestibular vestibular)
         {
-            var retorno = from v in vestibulares
-                where v.sDescricao.ToUpper().Equals(vestibular.sDescricao)
+            var retorno = from v in Vestibulares
+                where v.SDescricao.ToUpper().Equals(vestibular.SDescricao)
                 select v;
 
             if (retorno.Any())
@@ -33,16 +33,16 @@ namespace SisVest.DomainModel.Concrete
 
             try
             {
-                vestContext.Vestibulares.Add(vestibular);
-                vestContext.SaveChanges();
+                _vestContext.Vestibulares.Add(vestibular);
+                _vestContext.SaveChanges();
             }
             catch (DbUpdateException)
             {
                 var msgErro = string.Empty;
-                var erros = vestContext.GetValidationErrors();
+                var erros = _vestContext.GetValidationErrors();
 
                 msgErro = erros.SelectMany(erro => erro.ValidationErrors).Aggregate(msgErro, (current, detalheErro) => current + (detalheErro.ErrorMessage + "\n"));
-                vestContext.Entry(vestibular).State = EntityState.Detached;
+                _vestContext.Entry(vestibular).State = EntityState.Detached;
                 throw new InvalidOperationException(msgErro);
             }
             
@@ -50,42 +50,43 @@ namespace SisVest.DomainModel.Concrete
 
         public void Alterar(Vestibular vestibular)
         {
-            var retorno = from c in vestibulares
-                          where (c.iVestibularId.Equals(vestibular.iVestibularId) || c.sDescricao.ToUpper().Equals(vestibular.sDescricao) )
+            var retorno = from c in Vestibulares
+                          where (c.IVestibularId.Equals(vestibular.IVestibularId) || c.SDescricao.ToUpper().Equals(vestibular.SDescricao) )
                           select c;
 
             if (retorno.Any())
-                throw new InvalidOperationException("Já existe um Vestibular cadastrado com essa descrição."); 
+                throw new InvalidOperationException("Já existe um Vestibular cadastrado com essa descrição.");
 
-            vestContext.SaveChanges();
+            _vestContext.Entry(vestibular).State = EntityState.Modified;
+            _vestContext.SaveChanges();
         }
 
         public void Excluir(int iVestibularId)
         {
-            var result = from c in vestibulares
-                         where c.iVestibularId.Equals(iVestibularId)
+            var result = from c in Vestibulares
+                         where c.IVestibularId.Equals(iVestibularId)
                          select c;
 
             if (result.Any())
                 throw new InvalidOperationException("Vestibular não localizado no repositório.");
 
-            var result2 = (from v in vestibulares
+            var result2 = (from v in Vestibulares
                 from c in v.CandidatosList
-                where v.iVestibularId.Equals(iVestibularId)
+                where v.IVestibularId.Equals(iVestibularId)
                 select c);
 
             if (result2.Any())
                 throw new InvalidOperationException("Há Candidatos instritos nesse Vestibular.");
             
-            vestContext.Vestibulares.Remove(result.FirstOrDefault());
-            vestContext.SaveChanges();
+            _vestContext.Vestibulares.Remove(result.FirstOrDefault());
+            _vestContext.SaveChanges();
         }
 
         public IList<Candidato> RetornarCandidatosPorVesntibular(int iVestibularId)
         {
-            var result = from v in vestibulares
+            var result = from v in Vestibulares
                 from c in v.CandidatosList
-                where v.iVestibularId.Equals(iVestibularId)
+                where v.IVestibularId.Equals(iVestibularId)
                 select c;
 
             return result.Any() ? result.ToList() : null;

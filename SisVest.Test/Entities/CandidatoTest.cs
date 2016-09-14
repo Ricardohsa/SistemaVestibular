@@ -7,16 +7,16 @@ namespace SisVest.Test.Entities
     [TestClass]
     public class CandidatoTest
     {
-        public Candidato candidato1, candidato2;
+        public Candidato Candidato1, Candidato2;
 
         [TestInitialize]
         public void InicializarTeste()
         {
-            candidato1 = new Candidato()
+            Candidato1 = new Candidato()
             {
-                iCandidatoId = 1,
-                sCpf = "295.895.638.56",
-                sEmail = "jsilva@vestibular.com.br"
+                ICandidatoId = 1,
+                SCpf = "295.895.638.56",
+                SEmail = "jsilva@vestibular.com.br"
             };
         }
 
@@ -24,42 +24,42 @@ namespace SisVest.Test.Entities
         [TestMethod]
         public void Garantir_que_2_Candidatos_Sao_Iguais_Qaundo_Tem_Mesmo_ID()
         {
-            candidato2 = new Candidato()
+            Candidato2 = new Candidato()
             {
-                iCandidatoId = 1,
-                sCpf = "295.895.638.56"
+                ICandidatoId = 1,
+                SCpf = "295.895.638.56"
             };
 
-            Assert.AreEqual(candidato1.iCandidatoId, candidato2.iCandidatoId);
-            Assert.AreEqual(candidato1, candidato2);
+            Assert.AreEqual(Candidato1.ICandidatoId, Candidato2.ICandidatoId);
+            Assert.AreEqual(Candidato1, Candidato2);
         }
 
         [TestMethod]
         public void Garantir_que_2_Candidatos_Sao_Iguais_Qaundo_Tem_Mesmo_ID_Cpf()
         {
-            candidato2 = new Candidato()
+            Candidato2 = new Candidato()
             {
-                iCandidatoId = 1,
-                sCpf = "295.895.638.56"
+                ICandidatoId = 1,
+                SCpf = "295.895.638.56"
             };
 
-            Assert.AreEqual(candidato1.iCandidatoId, candidato2.iCandidatoId);
-            Assert.AreEqual(candidato1.sCpf, candidato2.sCpf);
-            Assert.AreEqual(candidato1, candidato2);
+            Assert.AreEqual(Candidato1.ICandidatoId, Candidato2.ICandidatoId);
+            Assert.AreEqual(Candidato1.SCpf, Candidato2.SCpf);
+            Assert.AreEqual(Candidato1, Candidato2);
         }
 
         [TestMethod]
         public void Garantir_que_2_Candidatos_Sao_Iguais_Qaundo_Tem_Mesmo_ID_Cpf_Email()
         {
-            candidato2 = new Candidato()
+            Candidato2 = new Candidato()
             {
-                iCandidatoId = 1,
-                sCpf = "295.895.638.56"
+                ICandidatoId = 1,
+                SCpf = "295.895.638.56"
                 
             };
 
-            Assert.AreEqual(candidato1.iCandidatoId, candidato2.iCandidatoId);                
-            Assert.AreEqual(candidato1, candidato2);
+            Assert.AreEqual(Candidato1.ICandidatoId, Candidato2.ICandidatoId);                
+            Assert.AreEqual(Candidato1, Candidato2);
         }
     }
 }

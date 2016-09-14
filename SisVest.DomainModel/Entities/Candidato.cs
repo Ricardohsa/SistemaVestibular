@@ -12,24 +12,24 @@ namespace SisVest.DomainModel.Entities
     public class Candidato
     {
         [Key]
-        public int iCandidatoId { get; set; }
+        public int ICandidatoId { get; set; }
 
         [Required]
-        public string sNome { get; set; }
+        public string SNome { get; set; }
 
-        public string sTelefone { get; set; }
+        public string STelefone { get; set; }
 
         [Required(ErrorMessage = "Informe o Email do Candidato.")]
-        public string sEmail { get; set; }
+        public string SEmail { get; set; }
 
-        public DateTime dtNascimento { get; set; }
+        public DateTime DtNascimento { get; set; }
 
-        public string sSenha { get; set; }
+        public string SSenha { get; set; }
 
-        public string sSexo { get; set; }
+        public string SSexo { get; set; }
 
         [Required(ErrorMessage = "Informe o CPF do Candidato.")]
-        public string  sCpf { get; set; }
+        public string  SCpf { get; set; }
 
         [Required(ErrorMessage = "Informe o Vestibular do Candidato.")]
         public virtual Vestibular Vestibular { get; set; }
@@ -37,14 +37,14 @@ namespace SisVest.DomainModel.Entities
         [Required(ErrorMessage = "Informe o Curso do Candidato.")]
         public virtual Curso Curso { get; set; }
 
-        public bool bAprovado { get; set; }
+        public bool BAprovado { get; set; }
 
         public override bool Equals(object obj)
         {
             var candidatoParam = (Candidato)obj;
 
-            return this.iCandidatoId == candidatoParam.iCandidatoId || this.sCpf ==  candidatoParam.sCpf ||
-                   this.sEmail == candidatoParam.sEmail;
+            return this.ICandidatoId == candidatoParam.ICandidatoId || this.SCpf ==  candidatoParam.SCpf ||
+                   this.SEmail == candidatoParam.SEmail;
         }
 
     }

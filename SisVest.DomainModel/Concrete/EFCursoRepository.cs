@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,58 +9,69 @@ using SisVest.DomainModel.Entities;
 
 namespace SisVest.DomainModel.Concrete
 {
-    public class EFCursoRepository :ICursoRepository
+    public class EfCursoRepository :ICursoRepository
     {
-        private VestContext vestContext;
+        private VestContext _vestContext;
 
-        public EFCursoRepository(VestContext context)
+        public EfCursoRepository(VestContext context)
         {
-            vestContext = context;
+            _vestContext = context;
         }
 
-        public IQueryable<Curso> cursos => vestContext.Cursos.AsQueryable();
+        public IQueryable<Curso> Cursos => _vestContext.Cursos.AsQueryable();
         
         public void Inserir(Curso curso)
         {
-            var retorno = from c in cursos
-                where c.sDescricao.ToUpper().Equals(curso.sDescricao)
+            var retorno = from c in Cursos
+                where c.SDescricao.ToUpper().Equals(curso.SDescricao)
                 select c;
 
-            if (retorno.Count() > 0)
+            if (retorno.Any())
                 throw new InvalidOperationException("Curso já cadastrado com esta Descrição.");
 
-            vestContext.Cursos.Add(curso);
-            vestContext.SaveChanges();
+            _vestContext.Cursos.Add(curso);
+            _vestContext.SaveChanges();
         }
 
         public void Alterar(Curso curso)
         {
-            var retorno = from c in cursos
-                          where (c.iCursoId.Equals(curso.iCursoId) || c.sDescricao.ToUpper().Equals(curso.sDescricao))
+            var retorno = from c in Cursos
+                          where (c.SDescricao.ToUpper().Equals(curso.SDescricao) && !c.ICursoId.Equals(curso.ICursoId))
                           select c;
 
-            if (retorno.Count() > 0)
+            if (retorno.Any())
                 throw new InvalidOperationException("Já existe um Curso cadastrado com essa descrição.");
 
-            vestContext.SaveChanges();
+            _vestContext.Entry(curso).State = EntityState.Modified;
+            _vestContext.SaveChanges();
         }
 
         public void Excluir(int iCursoId)
         {
-            var result = from c in cursos
-                where c.iCursoId.Equals(iCursoId)
+            var result = from c in Cursos
+                where c.ICursoId.Equals(iCursoId)
                 select c;
 
-            if (result.Count() == 0)
+            if (result.Count() < 0)
                 throw new InvalidOperationException("Curso não localizado no repositório.");
 
-            vestContext.Cursos.Remove(result.FirstOrDefault());
-            vestContext.SaveChanges();
+            _vestContext.Cursos.Remove(result.FirstOrDefault());
+            _vestContext.SaveChanges();
         }
 
-        public Curso Retornar(int iCursoId)
+        public Curso RetornarPorId(int iCursoId)
         {
-            return vestContext.Cursos.Where(c => c.iCursoId == iCursoId).FirstOrDefault();
+            return _vestContext.Cursos.FirstOrDefault(c => c.ICursoId == iCursoId);
+        }
+
+        public IQueryable<Candidato> CandidatosAprovadas(int iCursoId)
+        {
+            var result = from cur in _vestContext.Cursos
+                from cand in cur.CandidatosList
+                where cur.ICursoId == iCursoId && cand.BAprovado
+                select cand;
+
+            return result;
         }
     }
 }

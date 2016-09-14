@@ -10,21 +10,21 @@ namespace SisVest.Test.Repository
     [TestClass]
     public class AdminRepositoriesTest
     {
-        private IAdimRepository adminRepository;
-        private VestContext vestContext = new VestContext();
-        public Admin adminInserir;
+        private IAdimRepository _adminRepository;
+        private VestContext _vestContext = new VestContext();
+        public Admin AdminInserir;
 
         [TestInitialize]
         public void InicializarTeste()
         {
-            adminRepository = new EFAdminRepository(vestContext);
+            _adminRepository = new EfAdminRepository(_vestContext);
 
             var adminInserir = (new Admin()
             {
-                sEmail = "r.humberto.sa@gmail.com",
-                sLogin = "rhumbertosa",
-                sNomeTratamento = "Ricardo",
-                sSenha = "123456"
+                SEmail = "r.humberto.sa@gmail.com",
+                SLogin = "rhumbertosa",
+                SNomeTratamento = "Ricardo",
+                SSenha = "123456"
             });
         }
 
@@ -32,20 +32,20 @@ namespace SisVest.Test.Repository
         public void Pode_Consultar_Test()
         {
             //Ambiente    
-            vestContext.Admins.Add(adminInserir);
+            _vestContext.Admins.Add(AdminInserir);
 
-            vestContext.SaveChanges();
+            _vestContext.SaveChanges();
             //Ação
 
-            var admins = adminRepository.admins;
+            var admins = _adminRepository.Admins;
 
             var retorno = (from a in admins
-                           where a.sLogin.Equals(adminInserir.sLogin)
+                           where a.SLogin.Equals(AdminInserir.SLogin)
                            select a).FirstOrDefault();
 
             //Assertivas
             Assert.IsInstanceOfType(admins, typeof(IQueryable<Admin>));
-            Assert.AreEqual(retorno, adminInserir);
+            Assert.AreEqual(retorno, AdminInserir);
 
         }
 
@@ -55,19 +55,19 @@ namespace SisVest.Test.Repository
             //Ambiente
             var adminInserir = (new Admin()
             {
-                sEmail = "r.humberto.sa@gmail.com",
-                sLogin = "rhumbertosa",
-                sNomeTratamento = "Ricardo",
-                sSenha = "dmt8017"
+                SEmail = "r.humberto.sa@gmail.com",
+                SLogin = "rhumbertosa",
+                SNomeTratamento = "Ricardo",
+                SSenha = "dmt8017"
             });
 
             //Ação
 
-            adminRepository.Inserir(adminInserir);
-            vestContext.SaveChanges();
+            _adminRepository.Inserir(adminInserir);
+            _vestContext.SaveChanges();
 
-            var retorno = (from a in adminRepository.admins
-                           where a.sLogin.Equals(adminInserir.sLogin)
+            var retorno = (from a in _adminRepository.Admins
+                           where a.SLogin.Equals(adminInserir.SLogin)
                            select a).FirstOrDefault();
 
             //Assertivas            
@@ -82,23 +82,23 @@ namespace SisVest.Test.Repository
             //Ambiente
             var adminInserir = (new Admin()
             {
-                sEmail = "r.humberto.sa@gmail.com",
-                sLogin = "rhumbertosa",
-                sNomeTratamento = "Ricardo",
-                sSenha = "dmt8017"
+                SEmail = "r.humberto.sa@gmail.com",
+                SLogin = "rhumbertosa",
+                SNomeTratamento = "Ricardo",
+                SSenha = "dmt8017"
             });
 
             var adminInserir2 = (new Admin()
             {
-                sEmail = adminInserir.sEmail,
-                sLogin = "rhumbertosa",
-                sNomeTratamento = "Ricardo",
-                sSenha = "dmt8017"
+                SEmail = adminInserir.SEmail,
+                SLogin = "rhumbertosa",
+                SNomeTratamento = "Ricardo",
+                SSenha = "dmt8017"
             });
 
-            adminRepository.Inserir(adminInserir);
+            _adminRepository.Inserir(adminInserir);
             //Ação            
-            adminRepository.Inserir(adminInserir2);
+            _adminRepository.Inserir(adminInserir2);
 
 
             //Assertivas            
@@ -113,24 +113,24 @@ namespace SisVest.Test.Repository
             //Ambiente
             var adminInserir = (new Admin()
             {
-                sEmail = "r.humberto.sa@gmail.com",
-                sLogin = "rhumbertosa",
-                sNomeTratamento = "Ricardo",
-                sSenha = "dmt8017"
+                SEmail = "r.humberto.sa@gmail.com",
+                SLogin = "rhumbertosa",
+                SNomeTratamento = "Ricardo",
+                SSenha = "dmt8017"
             });
 
             var adminInserir2 = (new Admin()
             {
-                sEmail = "teste@gmail.com.br",
-                sLogin = adminInserir.sLogin,
-                sNomeTratamento = "Ricardo",
-                sSenha = "dmt8017"
+                SEmail = "teste@gmail.com.br",
+                SLogin = adminInserir.SLogin,
+                SNomeTratamento = "Ricardo",
+                SSenha = "dmt8017"
             });
 
-            adminRepository.Inserir(adminInserir);
+            _adminRepository.Inserir(adminInserir);
             //Ação
 
-            adminRepository.Inserir(adminInserir2);
+            _adminRepository.Inserir(adminInserir2);
 
             //Assertivas            
 
@@ -145,41 +145,41 @@ namespace SisVest.Test.Repository
             //Ambiente    
             var adminInserir = (new Admin()
             {
-                sEmail = "r.humberto.sa@gmail.com",
-                sLogin = "rhumbertosa",
-                sNomeTratamento = "Ricardo",
-                sSenha = "dmt8017"
+                SEmail = "r.humberto.sa@gmail.com",
+                SLogin = "rhumbertosa",
+                SNomeTratamento = "Ricardo",
+                SSenha = "dmt8017"
             });
 
-            adminRepository.Inserir(adminInserir);
+            _adminRepository.Inserir(adminInserir);
 
-            var emailEsperado = adminInserir.sEmail;
-            var loginEsperado = adminInserir.sLogin;
-            var nomeTratamentoEsperado = adminInserir.sNomeTratamento;
-            var senhaEsperada = adminInserir.sSenha;
+            var emailEsperado = adminInserir.SEmail;
+            var loginEsperado = adminInserir.SLogin;
+            var nomeTratamentoEsperado = adminInserir.SNomeTratamento;
+            var senhaEsperada = adminInserir.SSenha;
 
 
-            var adminAlterar = (from a in adminRepository.admins
-                                where a.iAdminId == adminInserir.iAdminId
+            var adminAlterar = (from a in _adminRepository.Admins
+                                where a.IAdminId == adminInserir.IAdminId
                                 select a).FirstOrDefault();
 
-            adminAlterar.sEmail = "miguel@gmail.com";
-            adminAlterar.sLogin = "Miguelsa";
-            adminAlterar.sNomeTratamento = "Miguel";
-            adminAlterar.sSenha = "45644";
+            adminAlterar.SEmail = "miguel@gmail.com";
+            adminAlterar.SLogin = "Miguelsa";
+            adminAlterar.SNomeTratamento = "Miguel";
+            adminAlterar.SSenha = "45644";
 
             //Ação
-            adminRepository.Alterar(adminAlterar);
+            _adminRepository.Alterar(adminAlterar);
 
-            var retorno = (from a in adminRepository.admins
-                          where a.iAdminId.Equals(adminInserir.iAdminId)
+            var retorno = (from a in _adminRepository.Admins
+                          where a.IAdminId.Equals(adminInserir.IAdminId)
                           select a).FirstOrDefault();
             //Assertivas
-            Assert.AreEqual(retorno.iAdminId, adminAlterar.iAdminId);
-            Assert.AreNotEqual(emailEsperado, adminAlterar.sEmail);
-            Assert.AreNotEqual(loginEsperado, adminAlterar.sLogin);
-            Assert.AreNotEqual(nomeTratamentoEsperado, adminAlterar.sNomeTratamento);
-            Assert.AreNotEqual(senhaEsperada, adminAlterar.sSenha);
+            Assert.AreEqual(retorno.IAdminId, adminAlterar.IAdminId);
+            Assert.AreNotEqual(emailEsperado, adminAlterar.SEmail);
+            Assert.AreNotEqual(loginEsperado, adminAlterar.SLogin);
+            Assert.AreNotEqual(nomeTratamentoEsperado, adminAlterar.SNomeTratamento);
+            Assert.AreNotEqual(senhaEsperada, adminAlterar.SSenha);
 
         }
 
@@ -191,25 +191,25 @@ namespace SisVest.Test.Repository
             //Ambiente
             var adminInserir = (new Admin()
             {
-                sEmail = "r.humberto.sa@gmail.com",
-                sLogin = "rhumbertosa",
-                sNomeTratamento = "Ricardo",
-                sSenha = "dmt8017"
+                SEmail = "r.humberto.sa@gmail.com",
+                SLogin = "rhumbertosa",
+                SNomeTratamento = "Ricardo",
+                SSenha = "dmt8017"
             });
 
-            adminRepository.Inserir(adminInserir);
+            _adminRepository.Inserir(adminInserir);
 
-            var adminAlterar = (from a in adminRepository.admins
-                                where a.iAdminId == adminInserir.iAdminId
+            var adminAlterar = (from a in _adminRepository.Admins
+                                where a.IAdminId == adminInserir.IAdminId
                                 select a).FirstOrDefault();
 
-            adminAlterar.sEmail = adminInserir.sEmail;
-            adminAlterar.sLogin = "Miguelsa";
-            adminAlterar.sNomeTratamento = "Miguel";
-            adminAlterar.sSenha = "45644";
+            adminAlterar.SEmail = adminInserir.SEmail;
+            adminAlterar.SLogin = "Miguelsa";
+            adminAlterar.SNomeTratamento = "Miguel";
+            adminAlterar.SSenha = "45644";
 
             //Ação
-            adminRepository.Alterar(adminAlterar);
+            _adminRepository.Alterar(adminAlterar);
 
 
             //Assertivas            
@@ -224,25 +224,25 @@ namespace SisVest.Test.Repository
             //Ambiente
             var adminInserir = (new Admin()
             {
-                sEmail = "r.humberto.sa@gmail.com",
-                sLogin = "rhumbertosa",
-                sNomeTratamento = "Ricardo",
-                sSenha = "dmt8017"
+                SEmail = "r.humberto.sa@gmail.com",
+                SLogin = "rhumbertosa",
+                SNomeTratamento = "Ricardo",
+                SSenha = "dmt8017"
             });
 
-            adminRepository.Inserir(adminInserir);
+            _adminRepository.Inserir(adminInserir);
 
-            var adminAlterar = (from a in adminRepository.admins
-                                where a.iAdminId == adminInserir.iAdminId
+            var adminAlterar = (from a in _adminRepository.Admins
+                                where a.IAdminId == adminInserir.IAdminId
                                 select a).FirstOrDefault();
 
-            adminAlterar.sEmail = "miguel@gmail.com";
-            adminAlterar.sLogin = adminInserir.sLogin;
-            adminAlterar.sNomeTratamento = "Miguel";
-            adminAlterar.sSenha = "45644";
+            adminAlterar.SEmail = "miguel@gmail.com";
+            adminAlterar.SLogin = adminInserir.SLogin;
+            adminAlterar.SNomeTratamento = "Miguel";
+            adminAlterar.SSenha = "45644";
 
             //Ação
-            adminRepository.Alterar(adminAlterar);
+            _adminRepository.Alterar(adminAlterar);
 
             //Assertivas            
 
@@ -254,21 +254,21 @@ namespace SisVest.Test.Repository
             //Ambiente
             var adminInserir = (new Admin()
             {
-                sEmail = "r.humberto.sa@gmail.com",
-                sLogin = "rhumbertosa",
-                sNomeTratamento = "Ricardo",
-                sSenha = "dmt8017"
+                SEmail = "r.humberto.sa@gmail.com",
+                SLogin = "rhumbertosa",
+                SNomeTratamento = "Ricardo",
+                SSenha = "dmt8017"
             });
 
-            adminRepository.Inserir(adminInserir);
+            _adminRepository.Inserir(adminInserir);
             
 
             //Ação
-            adminRepository.Excluir(adminInserir.iAdminId);
+            _adminRepository.Excluir(adminInserir.IAdminId);
 
             //Assertivas            
-            var result = from a in vestContext.Admins
-                         where a.iAdminId.Equals(adminInserir.iAdminId)
+            var result = from a in _vestContext.Admins
+                         where a.IAdminId.Equals(adminInserir.IAdminId)
                                     select a;
 
             Assert.AreEqual(0, result.Count());
@@ -283,7 +283,7 @@ namespace SisVest.Test.Repository
           
             
             //Ação
-            adminRepository.Excluir(10050);
+            _adminRepository.Excluir(10050);
 
             //Assertivas            
             
@@ -297,17 +297,17 @@ namespace SisVest.Test.Repository
             //Ambiente
             var adminInserir = (new Admin()
             {
-                sEmail = "r.humberto.sa@gmail.com",
-                sLogin = "rhumbertosa",
-                sNomeTratamento = "Ricardo",
-                sSenha = "dmt8017"
+                SEmail = "r.humberto.sa@gmail.com",
+                SLogin = "rhumbertosa",
+                SNomeTratamento = "Ricardo",
+                SSenha = "dmt8017"
             });
 
-            adminRepository.Inserir(adminInserir);
+            _adminRepository.Inserir(adminInserir);
 
             //Ação
             
-            var result = adminRepository.Retornar(adminInserir.iAdminId);
+            var result = _adminRepository.Retornar(adminInserir.IAdminId);
 
             //Assertivas            
             Assert.IsNotNull(result);
@@ -320,16 +320,16 @@ namespace SisVest.Test.Repository
         [TestCleanup]
         public void LimparCenario()
         {
-            var adminsParaRemover = from a in vestContext.Admins
+            var adminsParaRemover = from a in _vestContext.Admins
                                     select a;
 
             foreach (var admin in adminsParaRemover)
             {
-                vestContext.Admins.Remove(admin);
+                _vestContext.Admins.Remove(admin);
 
             }
 
-            vestContext.SaveChanges();
+            _vestContext.SaveChanges();
         }
 
 

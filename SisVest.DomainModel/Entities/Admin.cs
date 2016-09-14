@@ -12,25 +12,25 @@ namespace SisVest.DomainModel.Entities
     public class Admin
     {
         [Key]
-        public int iAdminId { get; set; }
+        public int IAdminId { get; set; }
 
         [Required]
-        public string sLogin { get; set; }
+        public string SLogin { get; set; }
 
         [Required]
-        public string sSenha { get; set; }
+        public string SSenha { get; set; }
 
         [Required]
-        public string sNomeTratamento { get; set; }
+        public string SNomeTratamento { get; set; }
 
         [Required]
-        public string sEmail { get; set; }
+        public string SEmail { get; set; }
 
         public override bool Equals(object obj)
         {
             var adminParam = (Admin)obj;
             
-            return iAdminId == adminParam.iAdminId || this.sLogin == adminParam.sLogin || this.sEmail == adminParam.sEmail;
+            return IAdminId == adminParam.IAdminId || this.SLogin == adminParam.SLogin || this.SEmail == adminParam.SEmail;
         }
 
     }

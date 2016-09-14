@@ -1,6 +1,7 @@
 ﻿using SisVest.DomainModel.Abstract;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
@@ -9,59 +10,60 @@ using SisVest.DomainModel.Entities;
 
 namespace SisVest.DomainModel.Concrete
 {
-    public class EFAdminRepository : IAdimRepository
+    public class EfAdminRepository : IAdimRepository
     {
-        private VestContext vestContext;
+        private VestContext _vestContext;
 
-        public EFAdminRepository(VestContext context)
+        public EfAdminRepository(VestContext context)
         {
-            vestContext = context;
+            _vestContext = context;
         }
 
-        public IQueryable<Admin> admins => vestContext.Admins.AsQueryable();
+        public IQueryable<Admin> Admins => _vestContext.Admins.AsQueryable();
 
         public void Alterar(Admin admin)
         {
-            var result = from a in admins
-                         where (a.sLogin.ToUpper().Equals(admin.sLogin) || a.sEmail.ToUpper().Equals(admin.sEmail)) 
-                         &&!a.iAdminId.Equals(a.iAdminId)
+            var result = from a in Admins
+                         where (a.SLogin.ToUpper().Equals(admin.SLogin) || a.SEmail.ToUpper().Equals(admin.SEmail)) 
+                         &&!a.IAdminId.Equals(a.IAdminId)
                          select a;
 
-            if (result.Count() > 0)
+            if (result.Any())
                 throw new InvalidOperationException("Já existe um Administrador cadastrado com este Login ou Email.");
 
-            vestContext.SaveChanges();
+            _vestContext.Entry(admin).State = EntityState.Modified;
+            _vestContext.SaveChanges();
         }
 
-        public void Excluir(int iCandidatoID)
+        public void Excluir(int iCandidatoId)
         {
-            var result = from a in admins
-                where a.iAdminId.Equals(iCandidatoID)
+            var result = from a in Admins
+                where a.IAdminId.Equals(iCandidatoId)
                 select a;
 
-            if (result.Count() == 0)
+            if (result.Count() < 0)
                 throw new InvalidOperationException("Administrador não localizado no repositório.");
             
-            vestContext.Admins.Remove(result.FirstOrDefault());
-            vestContext.SaveChanges();
+            _vestContext.Admins.Remove(result.FirstOrDefault());
+            _vestContext.SaveChanges();
         }
 
         public void Inserir(Admin admin)
         {
-            var result = from a in admins
-                         where a.sLogin.ToUpper().Equals(admin.sLogin) || a.sEmail.ToUpper().Equals(admin.sEmail)
+            var result = from a in Admins
+                         where a.SLogin.ToUpper().Equals(admin.SLogin) || a.SEmail.ToUpper().Equals(admin.SEmail)
                          select a;
 
-            if (result.Count() > 0)
+            if (result.Any())
                 throw new InvalidOperationException("Administrador já cadastrado com este Login ou Email.");
 
-            vestContext.Admins.Add(admin);
-            vestContext.SaveChanges();
+            _vestContext.Admins.Add(admin);
+            _vestContext.SaveChanges();
         }
 
         public Admin Retornar(int id)
         {
-            return vestContext.Admins.Where(a => a.iAdminId == id).FirstOrDefault();
+            return _vestContext.Admins.FirstOrDefault(a => a.IAdminId == id);
         }
     }
 }

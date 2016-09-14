@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		WebEssentials2015-Settings.json = WebEssentials2015-Settings.json
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SisVest.DIExemplo", "SisVest.DIExemplo\SisVest.DIExemplo.csproj", "{7BF15BE2-8EE5-476F-B9C2-B68EDE7B8841}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{B9A02724-EC86-4D86-BA59-48495DBA156A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9A02724-EC86-4D86-BA59-48495DBA156A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9A02724-EC86-4D86-BA59-48495DBA156A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BF15BE2-8EE5-476F-B9C2-B68EDE7B8841}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BF15BE2-8EE5-476F-B9C2-B68EDE7B8841}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BF15BE2-8EE5-476F-B9C2-B68EDE7B8841}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BF15BE2-8EE5-476F-B9C2-B68EDE7B8841}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

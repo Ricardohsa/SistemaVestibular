@@ -9,7 +9,7 @@ namespace SisVest.DomainModel.Abstract
 {
     public interface IVestibularRepository
     {
-        IQueryable<Vestibular> vestibulares { get; }
+        IQueryable<Vestibular> Vestibulares { get; }
 
         void Inserir(Vestibular vestibular);
 

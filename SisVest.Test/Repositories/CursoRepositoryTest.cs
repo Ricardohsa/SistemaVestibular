@@ -10,39 +10,111 @@ namespace SisVest.Test.Repositories
     [TestClass]
     public class CursoRepositoryTest
     {
-        private ICursoRepository  cursoRepository;
-        private VestContext vestContext = new VestContext();
-        private Curso cursoInserir;
+        private ICursoRepository  _cursoRepository;
+        private ICandidatoRepository _candidatoRepository;
+        private VestContext _vestContext = new VestContext();
+        private Curso _cursoInserir;
+        private Candidato _candidatoInserir;
+        private Candidato _candidatoInserir2;
+        private Candidato _candidatoInserir3;
+        private Vestibular _vestibularInserir;
 
         [TestInitialize]
         public void InicializarTeste()
         {
-            cursoRepository = new EFCursoRepository(vestContext);
-
-            cursoInserir = (new Curso()
+            //Cria Vestibular
+            _vestibularInserir = (new Vestibular()
             {
-                sDescricao = "Analise de Sistemas",
-                iVagas = 100
+                DtInicioInscricao = new DateTime(2017, 02, 01),
+                DtFimInscricao = new DateTime(2017, 03, 31),
+                DtProva = new DateTime(2017, 03, 31).AddDays(7),
+                SDescricao = "Vestibular UNIB 2017"
             });
+
+            _vestContext.Vestibulares.Add(_vestibularInserir);
+            _vestContext.SaveChanges();
+
+            
+            // Cria Curso
+            _cursoRepository = new EfCursoRepository(_vestContext);
+            _cursoInserir = (new Curso()
+            {
+                SDescricao = "Analise de Sistemas",
+                IVagas = 100
+            });
+
+            _vestContext.Cursos.Add(_cursoInserir);
+            _vestContext.SaveChanges();
+
+            //Cria Candidatos
+            _candidatoInserir = new Candidato()
+            {
+                Curso = _cursoInserir,
+                SNome = "Ricardo Sá",
+                SEmail = "r.humberto.sa@gmail.com",
+                SCpf = "29589563856",
+                STelefone = "991186933",
+                SSexo = "M",
+                SSenha = "123456",
+                DtNascimento = new DateTime(1982, 04, 11),
+                Vestibular = _vestibularInserir
+            };
+
+            _candidatoInserir2 = new Candidato()
+            {
+                Curso = _cursoInserir,
+                SNome = "Miguel Sá",
+                SEmail = "miguelsa@gmail.com",
+                SCpf = "295895638xy",
+                STelefone = "991186933",
+                SSexo = "M",
+                SSenha = "123456",
+                DtNascimento = new DateTime(1982, 07, 04),
+                Vestibular = _vestibularInserir
+            };
+
+            //Cria 3º Candidato
+            _candidatoInserir3 = new Candidato()
+            {
+                Curso = _cursoInserir,
+                SNome = "Michelle Sá",
+                SEmail = "michelle@gmail.com",
+                SCpf = "29749642813",
+                STelefone = "991186933",
+                SSexo = "F",
+                SSenha = "123456",
+                DtNascimento = new DateTime(1982, 04, 28),
+                Vestibular = _vestibularInserir
+            };
+
+            _candidatoRepository = new EfCandidatoRepository(_vestContext);
+
+            _candidatoRepository.RealizarInscricao(_candidatoInserir);
+            _candidatoRepository.RealizarInscricao(_candidatoInserir2);
+            _candidatoRepository.RealizarInscricao(_candidatoInserir3);
+
+            _candidatoRepository.Aprovar(_candidatoInserir.ICandidatoId);
+            _candidatoRepository.Aprovar(_candidatoInserir2.ICandidatoId);
+            _candidatoRepository.Aprovar(_candidatoInserir3.ICandidatoId);
         }
 
         [TestMethod]
         public void Pode_Consultar_Usando_LINQ_Repositorio_Test()
         {
             //Ambiente    
-            vestContext.Cursos.Add(cursoInserir);
-            vestContext.SaveChanges();
+            _vestContext.Cursos.Add(_cursoInserir);
+            _vestContext.SaveChanges();
             //Ação
 
-            var cursos = cursoRepository.cursos;
+            var cursos = _cursoRepository.Cursos;
 
             var retorno = (from a in cursos
-                           where a.sDescricao.Equals(cursoInserir.sDescricao)
+                           where a.SDescricao.Equals(_cursoInserir.SDescricao)
                            select a).FirstOrDefault();
 
             //Assertivas
             Assert.IsInstanceOfType(cursos, typeof(IQueryable<Curso>));
-            Assert.AreEqual(retorno, cursoInserir);
+            Assert.AreEqual(retorno, _cursoInserir);
 
         }
 
@@ -54,15 +126,15 @@ namespace SisVest.Test.Repositories
 
             //Ação
 
-            cursoRepository.Inserir(cursoInserir);
-            vestContext.SaveChanges();
+            _cursoRepository.Inserir(_cursoInserir);
+            _vestContext.SaveChanges();
 
-            var retorno = (from a in cursoRepository.cursos
-                           where a.sDescricao.Equals(cursoInserir.sDescricao)
+            var retorno = (from a in _cursoRepository.Cursos
+                           where a.SDescricao.Equals(_cursoInserir.SDescricao)
                            select a).FirstOrDefault();
 
             //Assertivas            
-            Assert.AreEqual(retorno, cursoInserir);
+            Assert.AreEqual(retorno, _cursoInserir);
 
         }
 
@@ -74,13 +146,13 @@ namespace SisVest.Test.Repositories
 
             var cursoInserir2 = (new Curso()
             {
-                sDescricao = cursoInserir.sDescricao,
-                iVagas = 100
+                SDescricao = _cursoInserir.SDescricao,
+                IVagas = 100
             });
 
-            cursoRepository.Inserir(cursoInserir);
+            _cursoRepository.Inserir(_cursoInserir);
             //Ação            
-            cursoRepository.Inserir(cursoInserir2);
+            _cursoRepository.Inserir(cursoInserir2);
 
 
             //Assertivas         
@@ -92,25 +164,25 @@ namespace SisVest.Test.Repositories
         public void Pode_Altera_Test()
         {
             //Ambiente    
-            cursoRepository.Inserir(cursoInserir);
+            _cursoRepository.Inserir(_cursoInserir);
 
-            var descriaoEsperada = cursoInserir.sDescricao;
+            var descriaoEsperada = _cursoInserir.SDescricao;
 
-            var cursoAlterar = (from a in cursoRepository.cursos
-                                where a.iCursoId == cursoInserir.iCursoId
+            var cursoAlterar = (from a in _cursoRepository.Cursos
+                                where a.ICursoId == _cursoInserir.ICursoId
                                 select a).FirstOrDefault();
 
-            cursoAlterar.sDescricao = "Ciencias da Computação";
+            cursoAlterar.SDescricao = "Ciencias da Computação";
 
             //Ação
-            cursoRepository.Alterar(cursoAlterar);
+            _cursoRepository.Alterar(cursoAlterar);
 
-            var retorno = (from a in cursoRepository.cursos
-                           where a.iCursoId.Equals(cursoInserir.iCursoId)
+            var retorno = (from a in _cursoRepository.Cursos
+                           where a.ICursoId.Equals(_cursoInserir.ICursoId)
                            select a).FirstOrDefault();
             //Assertivas
-            Assert.AreEqual(retorno.iCursoId, cursoAlterar.iCursoId);
-            Assert.AreNotEqual(descriaoEsperada, cursoAlterar.sDescricao);
+            Assert.AreEqual(retorno.ICursoId, cursoAlterar.ICursoId);
+            Assert.AreNotEqual(descriaoEsperada, cursoAlterar.SDescricao);
         }
 
 
@@ -119,16 +191,16 @@ namespace SisVest.Test.Repositories
         public void Nao_Pode_Alterar_Curso_Com_Mesma_Descricao_Test()
         {
             //Ambiente
-            cursoRepository.Inserir(cursoInserir);
+            _cursoRepository.Inserir(_cursoInserir);
 
-            var cursoAlterar = (from a in cursoRepository.cursos
-                                where a.iCursoId == cursoInserir.iCursoId
+            var cursoAlterar = (from a in _cursoRepository.Cursos
+                                where a.ICursoId == _cursoInserir.ICursoId
                                 select a).FirstOrDefault();
 
-            cursoAlterar.sDescricao = "Ciencias da Computação";
+            cursoAlterar.SDescricao = "Ciencias da Computação";
 
             //Ação
-            cursoRepository.Alterar(cursoAlterar);
+            _cursoRepository.Alterar(cursoAlterar);
 
             //Assertivas      
 
@@ -139,24 +211,24 @@ namespace SisVest.Test.Repositories
         public void Nao_Pode_Alterar_Curso_Com_Mesma_Descricao_Ja_Persistida_Test()
         {
             //Ambiente
-            cursoRepository.Inserir(cursoInserir);
+            _cursoRepository.Inserir(_cursoInserir);
 
             var cursoInserir2 = new Curso()
             {
-                sDescricao = "POS ENGENHARIA SOFTWARE"
+                SDescricao = "POS ENGENHARIA SOFTWARE"
             };
 
-            cursoRepository.Inserir(cursoInserir2);
+            _cursoRepository.Inserir(cursoInserir2);
 
-            var cursoAlterar = (from c in cursoRepository.cursos
-                                where c.iCursoId.Equals(cursoInserir.iCursoId)
+            var cursoAlterar = (from c in _cursoRepository.Cursos
+                                where c.ICursoId.Equals(_cursoInserir.ICursoId)
                                 select c).FirstOrDefault();
 
-            cursoAlterar.sDescricao = cursoInserir2.sDescricao;
+            cursoAlterar.SDescricao = cursoInserir2.SDescricao;
 
             //Ação
 
-            cursoRepository.Alterar(cursoAlterar);
+            _cursoRepository.Alterar(cursoAlterar);
             //Assertivas      
 
         }
@@ -166,15 +238,15 @@ namespace SisVest.Test.Repositories
         public void Pode_Excluir_Test()
         {
             //Ambiente
-            cursoRepository.Inserir(cursoInserir);
+            _cursoRepository.Inserir(_cursoInserir);
 
 
             //Ação
-            cursoRepository.Excluir(cursoInserir.iCursoId);
+            _cursoRepository.Excluir(_cursoInserir.ICursoId);
 
             //Assertivas            
-            var result = from c in vestContext.Cursos
-                         where c.iCursoId.Equals(cursoInserir.iCursoId)
+            var result = from c in _vestContext.Cursos
+                         where c.ICursoId.Equals(_cursoInserir.ICursoId)
                          select c;
 
             Assert.AreEqual(0, result.Count());
@@ -189,7 +261,7 @@ namespace SisVest.Test.Repositories
 
 
             //Ação
-            cursoRepository.Excluir(10050);
+            _cursoRepository.Excluir(10050);
 
             //Assertivas            
 
@@ -201,33 +273,67 @@ namespace SisVest.Test.Repositories
         public void Retornar_Curso_Por_ID_Test()
         {
             //Ambiente
-            cursoRepository.Inserir(cursoInserir);
+            _cursoRepository.Inserir(_cursoInserir);
 
             //Ação
 
-            var result = cursoRepository.Retornar(cursoInserir.iCursoId);
+            var result = _cursoRepository.RetornarPorId(_cursoInserir.ICursoId);
 
             //Assertivas            
             Assert.IsNotNull(result);
             Assert.IsInstanceOfType(result, typeof(Curso));
-            Assert.AreEqual(cursoInserir, result);
+            Assert.AreEqual(_cursoInserir, result);
 
         }
 
+        [TestMethod]
+        public void Pode_Retornar_Candidatos_Aprovados_Test()
+        {
+            //Ambiente
+            
+
+            //Ação
+            var result = _cursoRepository.CandidatosAprovadas(_cursoInserir.ICursoId);
+
+            //Assertivas            
+            Assert.IsNotNull(result);
+            Assert.AreEqual(3, result.Count());
+            Assert.IsTrue(result.ToList().Contains(_candidatoInserir));
+            Assert.IsTrue(result.ToList().Contains(_candidatoInserir2));
+            Assert.IsTrue(result.ToList().Contains(_candidatoInserir3));
+        }
 
         [TestCleanup]
         public void LimparCenario()
         {
-            var CursosParaRemover = from a in vestContext.Cursos
-                                    select a;
-
-            foreach (var curso in CursosParaRemover)
+            //Remove Candidatos
+            var candidatosParaRemover = from c in _vestContext.Candidatos select c;
+            foreach (var candidatos in candidatosParaRemover)
             {
-                vestContext.Cursos.Remove(curso);
+                _vestContext.Candidatos.Remove(candidatos);
 
             }
+            _vestContext.SaveChanges();
 
-            vestContext.SaveChanges();
+            //Remove Cursos
+            var cursosParaRemover = from c in _vestContext.Cursos select c;
+
+            foreach (var cursos in cursosParaRemover)
+            {
+                _vestContext.Cursos.Remove(cursos);
+
+            }
+            _vestContext.SaveChanges();
+
+            //Remove Vestibulares
+            var vestibularesParaRemover = from v in _vestContext.Vestibulares select v;
+
+            foreach (var vestibulares in vestibularesParaRemover)
+            {
+                _vestContext.Vestibulares.Remove(vestibulares);
+
+            }
+            _vestContext.SaveChanges();
         }
     }
 }

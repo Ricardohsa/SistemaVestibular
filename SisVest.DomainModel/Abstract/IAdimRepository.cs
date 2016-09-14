@@ -9,13 +9,13 @@ namespace SisVest.DomainModel.Abstract
 {
     public interface IAdimRepository
     {
-        IQueryable<Admin> admins { get; }
+        IQueryable<Admin> Admins { get; }
 
         void Inserir(Admin admin);
 
         void Alterar(Admin admin);
 
-        void Excluir(int iCandidatoID);
+        void Excluir(int iCandidatoId);
 
         Admin Retornar(int id);
 

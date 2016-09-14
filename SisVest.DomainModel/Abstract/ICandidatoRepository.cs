@@ -9,20 +9,20 @@ namespace SisVest.DomainModel.Abstract
 {
     public interface ICandidatoRepository
     {
-        IQueryable<Candidato> candidatos { get; }
+        IQueryable<Candidato> Candidatos { get; }
 
         void RealizarInscricao(Candidato candidato);
 
         void AtualizarCadasto(Candidato candidato);
 
-        void ExcluirCadastro(int iCandidatoID);
+        void ExcluirCadastro(int iCandidatoId);
 
-        void Aprovar(int iCandidatoID);
+        void Aprovar(int iCandidatoId);
 
         Candidato Retornar(int iCandidatoId);
 
         IList<Candidato> RetornarTodos();
 
-        IList<Candidato> RetornarCandidatossPorVestibularPorCurso(int iVestibularID, int iCursoID);  
+        IList<Candidato> RetornarCandidatossPorVestibularPorCurso(int iVestibularId, int iCursoId);  
     }
 }

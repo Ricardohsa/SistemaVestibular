@@ -7,18 +7,18 @@ namespace SisVest.Test.Entities
     [TestClass]
     public class AdminTest
     {
-        public Admin admin1, admin2;
+        public Admin Admin1, Admin2;
 
         [TestInitialize]
         public void InicializarTeste()
         {
-            admin1 = new Admin()
+            Admin1 = new Admin()
             {
-                iAdminId = 1,
-                sEmail = "joao@sistema.com.br",
-                sLogin = "Joao",
-                sNomeTratamento = "joaozinho",
-                sSenha = "123456"
+                IAdminId = 1,
+                SEmail = "joao@sistema.com.br",
+                SLogin = "Joao",
+                SNomeTratamento = "joaozinho",
+                SSenha = "123456"
 
             };
            
@@ -27,57 +27,57 @@ namespace SisVest.Test.Entities
         [TestMethod]
         public void Garantir_Que_2_Admins_Sao_Iguais_Qaundo_Tem_Mesmo_Id()
         {
-            admin2 = new Admin()
+            Admin2 = new Admin()
             {
-                iAdminId = 1,
-                sEmail = "j.silva@sistema.com.br",
-                sLogin = "jsilva",
-                sNomeTratamento = "joao",
-                sSenha = "147852"
+                IAdminId = 1,
+                SEmail = "j.silva@sistema.com.br",
+                SLogin = "jsilva",
+                SNomeTratamento = "joao",
+                SSenha = "147852"
 
             };
             
-            Assert.AreEqual(admin1.iAdminId, admin2.iAdminId);
-            Assert.AreEqual(admin1, admin2);
+            Assert.AreEqual(Admin1.IAdminId, Admin2.IAdminId);
+            Assert.AreEqual(Admin1, Admin2);
         }
 
         [TestMethod]
         public void Garantir_Que_2_Admins_Sao_Iguais_Qaundo_Tem_Mesmo_Id_Login()
         {
 
-            admin2 = new Admin()
+            Admin2 = new Admin()
             {
-                iAdminId = 1,
-                sEmail = "joao@sistema.com.br",
-                sLogin = "Joao",
-                sNomeTratamento = "joao",
-                sSenha = "147852"
+                IAdminId = 1,
+                SEmail = "joao@sistema.com.br",
+                SLogin = "Joao",
+                SNomeTratamento = "joao",
+                SSenha = "147852"
 
             };
 
-            Assert.AreEqual(admin1.iAdminId, admin2.iAdminId);
-            Assert.AreEqual(admin1.sLogin, admin2.sLogin);
-            Assert.AreEqual(admin1, admin2);
+            Assert.AreEqual(Admin1.IAdminId, Admin2.IAdminId);
+            Assert.AreEqual(Admin1.SLogin, Admin2.SLogin);
+            Assert.AreEqual(Admin1, Admin2);
         }
 
         [TestMethod]
         public void Garantir_Que_2_Admins_Sao_Iguais_Qaundo_Tem_Mesmo_Id_Login_Email()
         {
 
-            admin2 = new Admin()
+            Admin2 = new Admin()
             {
-                iAdminId = 1,
-                sEmail = "joao@sistema.com.br",
-                sLogin = "Joao",
-                sNomeTratamento = "joao",
-                sSenha = "147852"
+                IAdminId = 1,
+                SEmail = "joao@sistema.com.br",
+                SLogin = "Joao",
+                SNomeTratamento = "joao",
+                SSenha = "147852"
 
             };
 
-            Assert.AreEqual(admin1.iAdminId, admin2.iAdminId);
-            Assert.AreEqual(admin1.sLogin, admin2.sLogin);
-            Assert.AreEqual(admin1.sEmail, admin2.sEmail);
-            Assert.AreEqual(admin1, admin2);
+            Assert.AreEqual(Admin1.IAdminId, Admin2.IAdminId);
+            Assert.AreEqual(Admin1.SLogin, Admin2.SLogin);
+            Assert.AreEqual(Admin1.SEmail, Admin2.SEmail);
+            Assert.AreEqual(Admin1, Admin2);
         }
     }
 }

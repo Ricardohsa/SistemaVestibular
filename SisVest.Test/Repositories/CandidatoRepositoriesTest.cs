@@ -10,53 +10,53 @@ namespace SisVest.Test.Repositories
     [TestClass]
     public class CandidatoRepositoriesTest
     {
-        private ICandidatoRepository candidatoRepository;
-        private VestContext vestContext = new VestContext();
-        private Candidato candidatoInserir;
-        private Curso cursoInserir;
-        private Vestibular vestibularInserir;
+        private ICandidatoRepository _candidatoRepository;
+        private VestContext _vestContext = new VestContext();
+        private Candidato _candidatoInserir;
+        private Curso _cursoInserir;
+        private Vestibular _vestibularInserir;
 
         [TestInitialize]
         public void InicializarTeste()
         {
             //Cria Vestibular
-            vestibularInserir = (new Vestibular()
+            _vestibularInserir = (new Vestibular()
             {
-                dtInicioInscricao = new DateTime(2017, 02, 01),
-                dtFimInscricao = new DateTime(2017, 03, 31),
-                dtProva = new DateTime(2017, 03, 31).AddDays(7),
-                sDescricao = "Vestibular UNIB 2017"
+                DtInicioInscricao = new DateTime(2017, 02, 01),
+                DtFimInscricao = new DateTime(2017, 03, 31),
+                DtProva = new DateTime(2017, 03, 31).AddDays(7),
+                SDescricao = "Vestibular UNIB 2017"
             });
 
-            vestContext.Vestibulares.Add(vestibularInserir);
-            vestContext.SaveChanges();
+            _vestContext.Vestibulares.Add(_vestibularInserir);
+            _vestContext.SaveChanges();
 
             //Cria Curso
-            cursoInserir = (new Curso()
+            _cursoInserir = (new Curso()
             {
-                sDescricao = "Analise de Sistemas",
-                iVagas = 50
+                SDescricao = "Analise de Sistemas",
+                IVagas = 50
             });
 
-            vestContext.Cursos.Add(cursoInserir);
-            vestContext.SaveChanges();
+            _vestContext.Cursos.Add(_cursoInserir);
+            _vestContext.SaveChanges();
 
 
             //Cria Candidato
 
-            candidatoRepository = new EFCandidatoRepository(vestContext);
+            _candidatoRepository = new EfCandidatoRepository(_vestContext);
             
-            candidatoInserir = new Candidato()
+            _candidatoInserir = new Candidato()
             {
-                Curso = cursoInserir,
-                sNome = "Ricardo Sá",
-                sEmail = "r.humberto.sa@gmail.com",
-                sCpf  = "29589563856",
-                sTelefone = "991186933",
-                sSexo = "M",
-                sSenha = "123456",
-                dtNascimento = new DateTime(1982,04,11),
-                Vestibular = vestibularInserir
+                Curso = _cursoInserir,
+                SNome = "Ricardo Sá",
+                SEmail = "r.humberto.sa@gmail.com",
+                SCpf  = "29589563856",
+                STelefone = "991186933",
+                SSexo = "M",
+                SSenha = "123456",
+                DtNascimento = new DateTime(1982,04,11),
+                Vestibular = _vestibularInserir
             };
 
         }
@@ -65,19 +65,19 @@ namespace SisVest.Test.Repositories
         public void Pode_Consultar_LINQ_Usando_Repositorio_Test()
         {
             //Ambiente    
-            vestContext.Candidatos.Add(candidatoInserir);
-            vestContext.SaveChanges();
+            _vestContext.Candidatos.Add(_candidatoInserir);
+            _vestContext.SaveChanges();
 
             //Ação
-            var candidatos = candidatoRepository.candidatos;
+            var candidatos = _candidatoRepository.Candidatos;
 
             var retorno = (from c in candidatos
-                           where c.iCandidatoId.Equals(candidatoInserir.iCandidatoId) 
+                           where c.ICandidatoId.Equals(_candidatoInserir.ICandidatoId) 
                            select c).FirstOrDefault();
 
             //Assertivas
             Assert.IsInstanceOfType(candidatos, typeof(IQueryable<Candidato>));
-            Assert.AreEqual(retorno, candidatoInserir);
+            Assert.AreEqual(retorno, _candidatoInserir);
 
         }
 
@@ -86,17 +86,17 @@ namespace SisVest.Test.Repositories
         {
            
             //Ação
-            candidatoRepository.RealizarInscricao(candidatoInserir);
+            _candidatoRepository.RealizarInscricao(_candidatoInserir);
             
 
-            var result = (from c in candidatoRepository.candidatos
-                           where c.iCandidatoId.Equals(candidatoInserir.iCandidatoId)
+            var result = (from c in _candidatoRepository.Candidatos
+                           where c.ICandidatoId.Equals(_candidatoInserir.ICandidatoId)
                            select c).FirstOrDefault();
 
             //Assertivas            
-            Assert.AreEqual(result, candidatoInserir);
-            Assert.AreEqual(vestibularInserir, result.Vestibular);
-            Assert.AreEqual(cursoInserir, result.Curso);
+            Assert.AreEqual(result, _candidatoInserir);
+            Assert.AreEqual(_vestibularInserir, result.Vestibular);
+            Assert.AreEqual(_cursoInserir, result.Curso);
 
         }
 
@@ -105,10 +105,10 @@ namespace SisVest.Test.Repositories
         public void Nao_Pode_Realizar_Inscricao_Candidato_Sem_Email()
         {
             //Ambiente
-            candidatoInserir.sEmail = null;
+            _candidatoInserir.SEmail = null;
             
             //Ação            
-            candidatoRepository.RealizarInscricao(candidatoInserir);
+            _candidatoRepository.RealizarInscricao(_candidatoInserir);
 
             //Assertivas         
 
@@ -120,23 +120,23 @@ namespace SisVest.Test.Repositories
         {
             //Ambiente
 
-            candidatoRepository.RealizarInscricao(candidatoInserir);
+            _candidatoRepository.RealizarInscricao(_candidatoInserir);
 
             //Inserir 2º Candidato
             var candidatoInserir2 = new Candidato()
             {
-                Curso = cursoInserir,
-                sNome = "Michelle",
-                sEmail = "michelle.brg@hotmail.com",
-                sCpf = candidatoInserir.sCpf,
-                sTelefone = "991186933",
-                sSexo = "F",
-                sSenha = "123456",
-                dtNascimento = new DateTime(1982, 04, 28),
-                Vestibular = vestibularInserir
+                Curso = _cursoInserir,
+                SNome = "Michelle",
+                SEmail = "michelle.brg@hotmail.com",
+                SCpf = _candidatoInserir.SCpf,
+                STelefone = "991186933",
+                SSexo = "F",
+                SSenha = "123456",
+                DtNascimento = new DateTime(1982, 04, 28),
+                Vestibular = _vestibularInserir
             };
             //Ação            
-            candidatoRepository.RealizarInscricao(candidatoInserir2);
+            _candidatoRepository.RealizarInscricao(candidatoInserir2);
             //Assertivas 
         }
 
@@ -147,24 +147,24 @@ namespace SisVest.Test.Repositories
         {
             //Ambiente
 
-            candidatoRepository.RealizarInscricao(candidatoInserir);
+            _candidatoRepository.RealizarInscricao(_candidatoInserir);
 
             //Inserir 2º Candidato
             var candidatoInserir2 = new Candidato()
             {
-                Curso = cursoInserir,
-                sNome = "Michelle",
-                sEmail = candidatoInserir.sEmail,
-                sCpf = "29749642813",
-                sTelefone = "991186933",
-                sSexo = "F",
-                sSenha = "123456",
-                dtNascimento = new DateTime(1982, 04, 28),
-                Vestibular = vestibularInserir
+                Curso = _cursoInserir,
+                SNome = "Michelle",
+                SEmail = _candidatoInserir.SEmail,
+                SCpf = "29749642813",
+                STelefone = "991186933",
+                SSexo = "F",
+                SSenha = "123456",
+                DtNascimento = new DateTime(1982, 04, 28),
+                Vestibular = _vestibularInserir
             };
 
             //Ação            
-            candidatoRepository.RealizarInscricao(candidatoInserir2);
+            _candidatoRepository.RealizarInscricao(candidatoInserir2);
             
             //Assertivas 
         }
@@ -174,10 +174,10 @@ namespace SisVest.Test.Repositories
         public void Nao_Pode_Realizar_Inscricao_Candidato_Sem_Curso_Test()
         {
             //Ambiente
-            candidatoInserir.Curso = null;
+            _candidatoInserir.Curso = null;
 
             //Ação            
-            candidatoRepository.RealizarInscricao(candidatoInserir);
+            _candidatoRepository.RealizarInscricao(_candidatoInserir);
             
             //Assertivas 
         }
@@ -188,10 +188,10 @@ namespace SisVest.Test.Repositories
         public void Nao_Pode_Realizar_Inscricao_Candidato_Sem_Vestibular_Test()
         {
             //Ambiente
-            candidatoInserir.Vestibular = null;
+            _candidatoInserir.Vestibular = null;
 
             //Ação            
-            candidatoRepository.RealizarInscricao(candidatoInserir);
+            _candidatoRepository.RealizarInscricao(_candidatoInserir);
 
             //Assertivas 
         }
@@ -200,28 +200,28 @@ namespace SisVest.Test.Repositories
         public void Pode_Atualizar_Cadastro_Candidato_Test()
         {
             //Ambiente
-            var emailEsperadado = candidatoInserir.sEmail;
+            var emailEsperadado = _candidatoInserir.SEmail;
 
-            candidatoRepository.RealizarInscricao(candidatoInserir);
+            _candidatoRepository.RealizarInscricao(_candidatoInserir);
 
-            var candidatoAtualizarCadastro = (from c in candidatoRepository.candidatos
-                where c.iCandidatoId == candidatoInserir.iCandidatoId
+            var candidatoAtualizarCadastro = (from c in _candidatoRepository.Candidatos
+                where c.ICandidatoId == _candidatoInserir.ICandidatoId
                 select c).FirstOrDefault();
 
-            candidatoAtualizarCadastro.sEmail = "teste@teset.com.br";
+            candidatoAtualizarCadastro.SEmail = "teste@teset.com.br";
 
             //Ação            
 
-            candidatoRepository.AtualizarCadasto(candidatoAtualizarCadastro);
+            _candidatoRepository.AtualizarCadasto(candidatoAtualizarCadastro);
 
-            var retorno = (from c in candidatoRepository.candidatos
-                where c.iCandidatoId.Equals(candidatoInserir.iCandidatoId)
+            var retorno = (from c in _candidatoRepository.Candidatos
+                where c.ICandidatoId.Equals(_candidatoInserir.ICandidatoId)
                 select c).FirstOrDefault();
 
             //Assertivas 
 
-            Assert.AreEqual(candidatoInserir.iCandidatoId, retorno.iCandidatoId);
-            Assert.AreNotEqual(emailEsperadado, retorno.sEmail);
+            Assert.AreEqual(_candidatoInserir.ICandidatoId, retorno.ICandidatoId);
+            Assert.AreNotEqual(emailEsperadado, retorno.SEmail);
 
         }
 
@@ -229,15 +229,15 @@ namespace SisVest.Test.Repositories
         public void Pode_Excluir_Candidato_Com_Sucesso_Test()
         {
             //Ambiente
-            candidatoRepository.RealizarInscricao(candidatoInserir);
+            _candidatoRepository.RealizarInscricao(_candidatoInserir);
 
             
             //Ação            
-            candidatoRepository.ExcluirCadastro(candidatoInserir.iCandidatoId);
+            _candidatoRepository.ExcluirCadastro(_candidatoInserir.ICandidatoId);
             
             //Assertivas 
-            var result = from c in candidatoRepository.candidatos
-                where c.iCandidatoId.Equals(candidatoInserir.iCandidatoId)
+            var result = from c in _candidatoRepository.Candidatos
+                where c.ICandidatoId.Equals(_candidatoInserir.ICandidatoId)
                 select c;
 
             Assert.AreEqual(0, result.Count());
@@ -249,57 +249,57 @@ namespace SisVest.Test.Repositories
             //Ambiente
             
                 //Modificando curso para que ele tenha 3 vagas
-            cursoInserir.iVagas = 3;
+            _cursoInserir.IVagas = 3;
 
-            vestContext.SaveChanges();
+            _vestContext.SaveChanges();
 
             //Cria segundo Candidato
             var candidatoInserir2 = new Candidato()
             {
-                Curso = cursoInserir,
-                sNome = "Miguel Sá",
-                sEmail = "miguelsa@gmail.com",
-                sCpf = "295895638xy",
-                sTelefone = "991186933",
-                sSexo = "M",
-                sSenha = "123456",
-                dtNascimento = new DateTime(1982, 07, 04),
-                Vestibular = vestibularInserir
+                Curso = _cursoInserir,
+                SNome = "Miguel Sá",
+                SEmail = "miguelsa@gmail.com",
+                SCpf = "295895638xy",
+                STelefone = "991186933",
+                SSexo = "M",
+                SSenha = "123456",
+                DtNascimento = new DateTime(1982, 07, 04),
+                Vestibular = _vestibularInserir
             };
             
             //Cria 3º Candidato
             var candidatoInserir3 = new Candidato()
             {
-                Curso = cursoInserir,
-                sNome = "Michelle Sá",
-                sEmail = "michelle@gmail.com",
-                sCpf = "29749642813",
-                sTelefone = "991186933",
-                sSexo = "F",
-                sSenha = "123456",
-                dtNascimento = new DateTime(1982, 04, 28),
-                Vestibular = vestibularInserir
+                Curso = _cursoInserir,
+                SNome = "Michelle Sá",
+                SEmail = "michelle@gmail.com",
+                SCpf = "29749642813",
+                STelefone = "991186933",
+                SSexo = "F",
+                SSenha = "123456",
+                DtNascimento = new DateTime(1982, 04, 28),
+                Vestibular = _vestibularInserir
             };
 
             //Realizar Inscrição dos Candidatos
-            candidatoRepository.RealizarInscricao(candidatoInserir);
-            candidatoRepository.RealizarInscricao(candidatoInserir2);
-            candidatoRepository.RealizarInscricao(candidatoInserir3);
+            _candidatoRepository.RealizarInscricao(_candidatoInserir);
+            _candidatoRepository.RealizarInscricao(candidatoInserir2);
+            _candidatoRepository.RealizarInscricao(candidatoInserir3);
 
             //Ação            
               //Aprovar Candidatos
-            candidatoRepository.Aprovar(candidatoInserir.iCandidatoId);
-            candidatoRepository.Aprovar(candidatoInserir2.iCandidatoId);
-            candidatoRepository.Aprovar(candidatoInserir3.iCandidatoId);
+            _candidatoRepository.Aprovar(_candidatoInserir.ICandidatoId);
+            _candidatoRepository.Aprovar(candidatoInserir2.ICandidatoId);
+            _candidatoRepository.Aprovar(candidatoInserir3.ICandidatoId);
 
             //Assertivas 
-            var result = (from cur in vestContext.Cursos
+            var result = (from cur in _vestContext.Cursos
                           from can in cur.CandidatosList
-                         where cur.iCursoId.Equals(cursoInserir.iCursoId) && can.bAprovado
+                         where cur.ICursoId.Equals(_cursoInserir.ICursoId) && can.BAprovado
                          select can);
 
             Assert.AreEqual(3, result.Count());
-            Assert.IsTrue(result.ToList().Contains(candidatoInserir));
+            Assert.IsTrue(result.ToList().Contains(_candidatoInserir));
             Assert.IsTrue(result.ToList().Contains(candidatoInserir2));
             Assert.IsTrue(result.ToList().Contains(candidatoInserir3));
         }
@@ -313,50 +313,50 @@ namespace SisVest.Test.Repositories
             //Ambiente
 
             //Modificando curso para que ele tenha 3 vagas
-            cursoInserir.iVagas = 2;
+            _cursoInserir.IVagas = 2;
 
-            vestContext.SaveChanges();
+            _vestContext.SaveChanges();
 
             //Cria segundo Candidato
             var candidatoInserir2 = new Candidato()
             {
-                Curso = cursoInserir,
-                sNome = "Miguel Sá",
-                sEmail = "miguelsa@gmail.com",
-                sCpf = "295895638xy",
-                sTelefone = "991186933",
-                sSexo = "M",
-                sSenha = "123456",
-                dtNascimento = new DateTime(1982, 07, 04),
-                Vestibular = vestibularInserir
+                Curso = _cursoInserir,
+                SNome = "Miguel Sá",
+                SEmail = "miguelsa@gmail.com",
+                SCpf = "295895638xy",
+                STelefone = "991186933",
+                SSexo = "M",
+                SSenha = "123456",
+                DtNascimento = new DateTime(1982, 07, 04),
+                Vestibular = _vestibularInserir
             };
 
             //Cria 3º Candidato
             var candidatoInserir3 = new Candidato()
             {
-                Curso = cursoInserir,
-                sNome = "Michelle Sá",
-                sEmail = "michelle@gmail.com",
-                sCpf = "29749642813",
-                sTelefone = "991186933",
-                sSexo = "F",
-                sSenha = "123456",
-                dtNascimento = new DateTime(1982, 04, 28),
-                Vestibular = vestibularInserir
+                Curso = _cursoInserir,
+                SNome = "Michelle Sá",
+                SEmail = "michelle@gmail.com",
+                SCpf = "29749642813",
+                STelefone = "991186933",
+                SSexo = "F",
+                SSenha = "123456",
+                DtNascimento = new DateTime(1982, 04, 28),
+                Vestibular = _vestibularInserir
             };
 
             //Realizar Inscrição dos Candidatos
-            candidatoRepository.RealizarInscricao(candidatoInserir);
-            candidatoRepository.RealizarInscricao(candidatoInserir2);
-            candidatoRepository.RealizarInscricao(candidatoInserir3);
+            _candidatoRepository.RealizarInscricao(_candidatoInserir);
+            _candidatoRepository.RealizarInscricao(candidatoInserir2);
+            _candidatoRepository.RealizarInscricao(candidatoInserir3);
 
             //Aprovar Candidatos
-            candidatoRepository.Aprovar(candidatoInserir.iCandidatoId);
-            candidatoRepository.Aprovar(candidatoInserir2.iCandidatoId);
+            _candidatoRepository.Aprovar(_candidatoInserir.ICandidatoId);
+            _candidatoRepository.Aprovar(candidatoInserir2.ICandidatoId);
 
             //Ação           
             //Ao realizar aprovação do 3º candidato deve levantar exception
-            candidatoRepository.Aprovar(candidatoInserir3.iCandidatoId);
+            _candidatoRepository.Aprovar(candidatoInserir3.ICandidatoId);
 
             //Assertivas 
         }
@@ -365,15 +365,15 @@ namespace SisVest.Test.Repositories
         public void Pode_Retornar_Candidato_Por_Id_Test()
         {
             //Ambiente
-            candidatoRepository.RealizarInscricao(candidatoInserir);
+            _candidatoRepository.RealizarInscricao(_candidatoInserir);
             
             //Ação           
-            var result = candidatoRepository.Retornar(candidatoInserir.iCandidatoId);
+            var result = _candidatoRepository.Retornar(_candidatoInserir.ICandidatoId);
 
             //Assertivas 
             Assert.IsNotNull(result);
             Assert.IsInstanceOfType(result,typeof(Candidato));
-            Assert.AreEqual(candidatoInserir, result);
+            Assert.AreEqual(_candidatoInserir, result);
         }
 
 
@@ -386,43 +386,43 @@ namespace SisVest.Test.Repositories
             //Cria segundo Candidato
             var candidatoInserir2 = new Candidato()
             {
-                Curso = cursoInserir,
-                sNome = "Miguel Sá",
-                sEmail = "miguelsa@gmail.com",
-                sCpf = "295895638xy",
-                sTelefone = "991186933",
-                sSexo = "M",
-                sSenha = "123456",
-                dtNascimento = new DateTime(1982, 07, 04),
-                Vestibular = vestibularInserir
+                Curso = _cursoInserir,
+                SNome = "Miguel Sá",
+                SEmail = "miguelsa@gmail.com",
+                SCpf = "295895638xy",
+                STelefone = "991186933",
+                SSexo = "M",
+                SSenha = "123456",
+                DtNascimento = new DateTime(1982, 07, 04),
+                Vestibular = _vestibularInserir
             };
 
             //Cria 3º Candidato
             var candidatoInserir3 = new Candidato()
             {
-                Curso = cursoInserir,
-                sNome = "Michelle Sá",
-                sEmail = "michelle@gmail.com",
-                sCpf = "29749642813",
-                sTelefone = "991186933",
-                sSexo = "F",
-                sSenha = "123456",
-                dtNascimento = new DateTime(1982, 04, 28),
-                Vestibular = vestibularInserir
+                Curso = _cursoInserir,
+                SNome = "Michelle Sá",
+                SEmail = "michelle@gmail.com",
+                SCpf = "29749642813",
+                STelefone = "991186933",
+                SSexo = "F",
+                SSenha = "123456",
+                DtNascimento = new DateTime(1982, 04, 28),
+                Vestibular = _vestibularInserir
             };
 
             //Realizar Inscrição dos Candidatos
-            candidatoRepository.RealizarInscricao(candidatoInserir);
-            candidatoRepository.RealizarInscricao(candidatoInserir2);
-            candidatoRepository.RealizarInscricao(candidatoInserir3);
+            _candidatoRepository.RealizarInscricao(_candidatoInserir);
+            _candidatoRepository.RealizarInscricao(candidatoInserir2);
+            _candidatoRepository.RealizarInscricao(candidatoInserir3);
             
 
             //Ação           
-            var candidatos = candidatoRepository.RetornarTodos();
+            var candidatos = _candidatoRepository.RetornarTodos();
 
             //Assertivas 
             Assert.AreEqual(3, candidatos.Count);
-            Assert.IsTrue(candidatos.Contains(candidatoInserir));
+            Assert.IsTrue(candidatos.Contains(_candidatoInserir));
             Assert.IsTrue(candidatos.Contains(candidatoInserir2));
             Assert.IsTrue(candidatos.Contains(candidatoInserir3));
         }
@@ -436,45 +436,45 @@ namespace SisVest.Test.Repositories
             //Cria segundo Candidato
             var candidatoInserir2 = new Candidato()
             {
-                Curso = cursoInserir,
-                sNome = "Miguel Sá",
-                sEmail = "miguelsa@gmail.com",
-                sCpf = "295895638xy",
-                sTelefone = "991186933",
-                sSexo = "M",
-                sSenha = "123456",
-                dtNascimento = new DateTime(1982, 07, 04),
-                Vestibular = vestibularInserir
+                Curso = _cursoInserir,
+                SNome = "Miguel Sá",
+                SEmail = "miguelsa@gmail.com",
+                SCpf = "295895638xy",
+                STelefone = "991186933",
+                SSexo = "M",
+                SSenha = "123456",
+                DtNascimento = new DateTime(1982, 07, 04),
+                Vestibular = _vestibularInserir
             };
 
             //Cria 3º Candidato
             var candidatoInserir3 = new Candidato()
             {
-                Curso = cursoInserir,
-                sNome = "Michelle Sá",
-                sEmail = "michelle@gmail.com",
-                sCpf = "29749642813",
-                sTelefone = "991186933",
-                sSexo = "F",
-                sSenha = "123456",
-                dtNascimento = new DateTime(1982, 04, 28),
-                Vestibular = vestibularInserir
+                Curso = _cursoInserir,
+                SNome = "Michelle Sá",
+                SEmail = "michelle@gmail.com",
+                SCpf = "29749642813",
+                STelefone = "991186933",
+                SSexo = "F",
+                SSenha = "123456",
+                DtNascimento = new DateTime(1982, 04, 28),
+                Vestibular = _vestibularInserir
             };
 
             //Realizar Inscrição dos Candidatos
-            candidatoRepository.RealizarInscricao(candidatoInserir);
-            candidatoRepository.RealizarInscricao(candidatoInserir2);
-            candidatoRepository.RealizarInscricao(candidatoInserir3);
+            _candidatoRepository.RealizarInscricao(_candidatoInserir);
+            _candidatoRepository.RealizarInscricao(candidatoInserir2);
+            _candidatoRepository.RealizarInscricao(candidatoInserir3);
 
 
             //Ação           
             var candidatos =
-                candidatoRepository.RetornarCandidatossPorVestibularPorCurso(vestibularInserir.iVestibularId,
-                    cursoInserir.iCursoId);
+                _candidatoRepository.RetornarCandidatossPorVestibularPorCurso(_vestibularInserir.IVestibularId,
+                    _cursoInserir.ICursoId);
 
             //Assertivas 
             Assert.AreEqual(3, candidatos.Count);
-            Assert.IsTrue(candidatos.Contains(candidatoInserir));
+            Assert.IsTrue(candidatos.Contains(_candidatoInserir));
             Assert.IsTrue(candidatos.Contains(candidatoInserir2));
             Assert.IsTrue(candidatos.Contains(candidatoInserir3));
         }
@@ -483,33 +483,33 @@ namespace SisVest.Test.Repositories
         public void LimparCenario()
         {
             //Remove Candidatos
-            var candidatosParaRemover = from c in vestContext.Candidatos select c;
+            var candidatosParaRemover = from c in _vestContext.Candidatos select c;
             foreach (var candidatos in candidatosParaRemover)
             {
-                vestContext.Candidatos.Remove(candidatos);
+                _vestContext.Candidatos.Remove(candidatos);
 
             }
-            vestContext.SaveChanges();
+            _vestContext.SaveChanges();
 
             //Remove Cursos
-            var cursosParaRemover = from c in vestContext.Cursos select c;
+            var cursosParaRemover = from c in _vestContext.Cursos select c;
 
             foreach (var cursos in cursosParaRemover)
             {
-                vestContext.Cursos.Remove(cursos);
+                _vestContext.Cursos.Remove(cursos);
 
             }
-            vestContext.SaveChanges();
+            _vestContext.SaveChanges();
 
             //Remove Vestibulares
-            var vestibularesParaRemover = from v in vestContext.Vestibulares select v;
+            var vestibularesParaRemover = from v in _vestContext.Vestibulares select v;
 
             foreach (var vestibulares in vestibularesParaRemover)
             {
-                vestContext.Vestibulares.Remove(vestibulares);
+                _vestContext.Vestibulares.Remove(vestibulares);
 
             }
-            vestContext.SaveChanges();
+            _vestContext.SaveChanges();
             
         }
     }

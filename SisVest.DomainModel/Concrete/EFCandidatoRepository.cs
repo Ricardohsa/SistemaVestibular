@@ -11,92 +11,93 @@ using SisVest.DomainModel.Entities;
 
 namespace SisVest.DomainModel.Concrete
 {
-    public class EFCandidatoRepository :ICandidatoRepository
+    public class EfCandidatoRepository :ICandidatoRepository
     {
-        private VestContext vestContext;
+        private VestContext _vestContext;
 
-        public EFCandidatoRepository(VestContext context)
+        public EfCandidatoRepository(VestContext context)
         {
-            vestContext = context;
+            _vestContext = context;
         }
 
-        public IQueryable<Candidato> candidatos => vestContext.Candidatos.AsQueryable();
+        public IQueryable<Candidato> Candidatos => _vestContext.Candidatos.AsQueryable();
 
         public void RealizarInscricao(Candidato candidato)
         {
-            var result = vestContext.Candidatos.Where(c => c.sCpf.Equals(candidato.sCpf));
+            var result = _vestContext.Candidatos.Where(c => c.SCpf.Equals(candidato.SCpf));
 
             if (result.Any())
                 throw new InvalidOperationException("Já existe um Candidato usando esse CPF.");
 
-            var result2 = vestContext.Candidatos.Where(c => c.sEmail.Equals(candidato.sEmail));
+            var result2 = _vestContext.Candidatos.Where(c => c.SEmail.Equals(candidato.SEmail));
 
             if (result2.Any())
                 throw new InvalidOperationException("Já existe um Candidato usando esse Email.");
             
             try
             {
-                vestContext.Candidatos.Add(candidato);
-                vestContext.SaveChanges();
+                _vestContext.Candidatos.Add(candidato);
+                _vestContext.SaveChanges();
             }
             catch (DbEntityValidationException)
             {
                 var msgErro = string.Empty;
-                var erros = vestContext.GetValidationErrors();
+                var erros = _vestContext.GetValidationErrors();
 
                 msgErro = erros.SelectMany(erro => erro.ValidationErrors).Aggregate(msgErro, (current, detalheErro) => current + (detalheErro.ErrorMessage + "\n"));
-                vestContext.Entry(candidato).State = EntityState.Detached;
+                _vestContext.Entry(candidato).State = EntityState.Detached;
                 throw new InvalidOperationException(msgErro);
             }
         }
 
         public void AtualizarCadasto(Candidato candidato)
         {
-            vestContext.SaveChanges();
+            _vestContext.Entry(candidato).State = EntityState.Modified;
+            _vestContext.SaveChanges();
         }
 
-        public void ExcluirCadastro(int iCandidatoID)
+        public void ExcluirCadastro(int iCandidatoId)
         {
-            var candidato = vestContext.Candidatos.FirstOrDefault(c => c.iCandidatoId.Equals(iCandidatoID));
+            var candidato = _vestContext.Candidatos.FirstOrDefault(c => c.ICandidatoId.Equals(iCandidatoId));
 
-            vestContext.Candidatos.Remove(candidato);
-            vestContext.SaveChanges();
+            _vestContext.Candidatos.Remove(candidato);
+            _vestContext.SaveChanges();
         }
 
-        public void Aprovar(int iCandidatoID)
+        public void Aprovar(int iCandidatoId)
         {
-            var candidato = vestContext.Candidatos.FirstOrDefault(c => c.iCandidatoId == iCandidatoID);
+            var candidato = _vestContext.Candidatos.FirstOrDefault(c => c.ICandidatoId == iCandidatoId);
             var totalVagasPorCurso =
-                vestContext.Cursos.Where(c => c.iCursoId == candidato.Curso.iCursoId)
-                    .Select(c => new {c.iVagas})
+                _vestContext.Cursos.Where(c => c.ICursoId == candidato.Curso.ICursoId)
+                    .Select(c => new {iVagas = c.IVagas})
                     .FirstOrDefault();
 
-            var result = (from cur in vestContext.Cursos
+            var result = (from cur in _vestContext.Cursos
                 from cand in cur.CandidatosList
-                where cur.iCursoId == candidato.Curso.iCursoId && cand.bAprovado
+                where cur.ICursoId == candidato.Curso.ICursoId && cand.BAprovado
                 select cand).Count();
             
             if (totalVagasPorCurso != null && result == totalVagasPorCurso.iVagas)
                 throw new InvalidOperationException("O curso já está lotado e não pode mais receber aprovação");
 
-            if (candidato != null) candidato.bAprovado = true;
-            vestContext.SaveChanges();
+            if (candidato != null) candidato.BAprovado = true;
+            _vestContext.SaveChanges();
         }
 
         public Candidato Retornar(int iCandidatoId)
         {
-            return vestContext.Candidatos.FirstOrDefault(c => c.iCandidatoId.Equals(iCandidatoId));
+            return _vestContext.Candidatos.FirstOrDefault(c => c.ICandidatoId.Equals(iCandidatoId));
         }
 
         public IList<Candidato> RetornarTodos()
         {
-            return vestContext.Candidatos.ToList();
+            return _vestContext.Candidatos.ToList();
         }
 
-        public IList<Candidato> RetornarCandidatossPorVestibularPorCurso(int iVestibularID, int iCursoID)
+        public IList<Candidato> RetornarCandidatossPorVestibularPorCurso(int iVestibularId, int iCursoId)
         {
-            return vestContext.Candidatos.Where(
-                c => c.Curso.iCursoId.Equals(iCursoID) && c.Vestibular.iVestibularId.Equals(iVestibularID)).ToList();
+            return _vestContext.Candidatos.Where(
+                c => c.Curso.ICursoId.Equals(iCursoId) && c.Vestibular.IVestibularId.Equals(iVestibularId)).ToList();
         }
     }
 }

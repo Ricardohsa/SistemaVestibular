@@ -9,7 +9,7 @@ namespace SisVest.DomainModel.Abstract
 {
     public interface ICursoRepository
     {
-        IQueryable<Curso> cursos { get; }
+        IQueryable<Curso> Cursos { get; }
 
         void Inserir(Curso curso);
 
@@ -17,7 +17,9 @@ namespace SisVest.DomainModel.Abstract
 
         void Excluir(int iCursoId);
 
-        Curso Retornar(int iCursoId);
+        Curso RetornarPorId(int iCursoId);
+
+        IQueryable<Candidato> CandidatosAprovadas(int iCursoId);
 
     }
 }
