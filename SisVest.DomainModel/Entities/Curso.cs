@@ -21,11 +21,7 @@ namespace SisVest.DomainModel.Entities
         public override bool Equals(object obj)
         {
             var cursoParam = (Curso)obj;
-            if (this.iCursoId == cursoParam.iCursoId || this.sDescricao == cursoParam.sDescricao)              
-
-                return true;
-
-            return false;
+            return this.iCursoId == cursoParam.iCursoId || this.sDescricao == cursoParam.sDescricao;
         }
     }
 }

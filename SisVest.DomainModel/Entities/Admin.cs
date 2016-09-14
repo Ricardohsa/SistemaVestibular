@@ -30,11 +30,7 @@ namespace SisVest.DomainModel.Entities
         {
             var adminParam = (Admin)obj;
             
-            if (this.iAdminId == adminParam.iAdminId || this.sLogin == adminParam.sLogin || this.sEmail == adminParam.sEmail)
-
-                return true;
-
-            return false;
+            return iAdminId == adminParam.iAdminId || this.sLogin == adminParam.sLogin || this.sEmail == adminParam.sEmail;
         }
 
     }

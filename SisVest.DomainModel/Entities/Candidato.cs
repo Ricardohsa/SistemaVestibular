@@ -14,10 +14,12 @@ namespace SisVest.DomainModel.Entities
         [Key]
         public int iCandidatoId { get; set; }
 
+        [Required]
         public string sNome { get; set; }
 
         public string sTelefone { get; set; }
 
+        [Required(ErrorMessage = "Informe o Email do Candidato.")]
         public string sEmail { get; set; }
 
         public DateTime dtNascimento { get; set; }
@@ -26,10 +28,13 @@ namespace SisVest.DomainModel.Entities
 
         public string sSexo { get; set; }
 
+        [Required(ErrorMessage = "Informe o CPF do Candidato.")]
         public string  sCpf { get; set; }
 
+        [Required(ErrorMessage = "Informe o Vestibular do Candidato.")]
         public virtual Vestibular Vestibular { get; set; }
 
+        [Required(ErrorMessage = "Informe o Curso do Candidato.")]
         public virtual Curso Curso { get; set; }
 
         public bool bAprovado { get; set; }
@@ -37,13 +42,9 @@ namespace SisVest.DomainModel.Entities
         public override bool Equals(object obj)
         {
             var candidatoParam = (Candidato)obj;
-            if (this.iCandidatoId == candidatoParam.iCandidatoId || this.sCpf ==  candidatoParam.sCpf ||
-                this.sEmail == candidatoParam.sEmail)
 
-                return true;
-
-
-            return false;
+            return this.iCandidatoId == candidatoParam.iCandidatoId || this.sCpf ==  candidatoParam.sCpf ||
+                   this.sEmail == candidatoParam.sEmail;
         }
 
     }

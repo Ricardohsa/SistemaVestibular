@@ -36,16 +36,14 @@ namespace SisVest.DomainModel.Concrete
                 vestContext.Vestibulares.Add(vestibular);
                 vestContext.SaveChanges();
             }
-            catch (DbUpdateException E)
+            catch (DbUpdateException)
             {
-                
                 var msgErro = string.Empty;
                 var erros = vestContext.GetValidationErrors();
 
                 msgErro = erros.SelectMany(erro => erro.ValidationErrors).Aggregate(msgErro, (current, detalheErro) => current + (detalheErro.ErrorMessage + "\n"));
                 vestContext.Entry(vestibular).State = EntityState.Detached;
                 throw new InvalidOperationException(msgErro);
-                
             }
             
         }
@@ -56,7 +54,7 @@ namespace SisVest.DomainModel.Concrete
                           where (c.iVestibularId.Equals(vestibular.iVestibularId) || c.sDescricao.ToUpper().Equals(vestibular.sDescricao) )
                           select c;
 
-            if (retorno.Count() > 0)
+            if (retorno.Any())
                 throw new InvalidOperationException("Já existe um Vestibular cadastrado com essa descrição."); 
 
             vestContext.SaveChanges();
@@ -68,7 +66,7 @@ namespace SisVest.DomainModel.Concrete
                          where c.iVestibularId.Equals(iVestibularId)
                          select c;
 
-            if (result.Count() == 0)
+            if (result.Any())
                 throw new InvalidOperationException("Vestibular não localizado no repositório.");
 
             var result2 = (from v in vestibulares
@@ -76,7 +74,7 @@ namespace SisVest.DomainModel.Concrete
                 where v.iVestibularId.Equals(iVestibularId)
                 select c);
 
-            if (result2.Count() == 0)
+            if (result2.Any())
                 throw new InvalidOperationException("Há Candidatos instritos nesse Vestibular.");
             
             vestContext.Vestibulares.Remove(result.FirstOrDefault());
