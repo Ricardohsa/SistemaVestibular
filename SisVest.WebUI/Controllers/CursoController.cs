@@ -9,11 +9,12 @@ using SisVest.WebUI.Models;
 
 namespace SisVest.WebUI.Controllers
 {
+    [Authorize]
     public class CursoController : Controller
     {
         private ICursoRepository _repository;
         private CursoModel _cursoModel;
-
+        
         public CursoController(ICursoRepository cursoRepository, CursoModel cursoModel)
         {
             _repository = cursoRepository;
@@ -23,9 +24,10 @@ namespace SisVest.WebUI.Controllers
         // GET: Curso
         public ActionResult Index()
         {
+
             return View(_cursoModel.RetornaTodos().ToList());
         }
-
+        
         public ActionResult Alterar(int id)
         {
             return View(_repository.RetornarPorId(id));

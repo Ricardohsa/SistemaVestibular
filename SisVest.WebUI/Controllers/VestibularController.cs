@@ -7,10 +7,11 @@ using SisVest.DomainModel.Entities;
 
 namespace SisVest.WebUI.Controllers
 {
+    [Authorize]
     public class VestibularController : Controller
     {
         private IVestibularRepository _repository;
-        
+
         
         public VestibularController(IVestibularRepository vestibularRepository)
         {
@@ -18,6 +19,7 @@ namespace SisVest.WebUI.Controllers
         }
 
         // GET: Curso
+        
         public ActionResult Index()
         {
             return View(_repository.Vestibulares.ToList());

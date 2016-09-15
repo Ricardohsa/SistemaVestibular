@@ -1,0 +1,14 @@
+﻿@model SisVest.WebUI.Models.AutenticacaoModel
+
+@{
+    ViewBag.Title = "Entrar";
+}
+
+<h2>Entrar</h2>
+
+@using (@Html.BeginForm())
+{
+    @Html.EditorForModel()
+    <p><input type="submit" value="Entrar"/></p>
+
+}
