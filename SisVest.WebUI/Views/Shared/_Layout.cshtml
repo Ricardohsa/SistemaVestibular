@@ -13,42 +13,44 @@
 </head>
 <body>
 
-
     @if (TempData["Mensagem"] != null)
     {
-        
         <p><strong>@TempData["Mensagem"]</strong> </p>
     }
 
-<div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            @Html.ActionLink("Application name", "Index", "Home", new {area = ""}, new {@class = "navbar-brand"})
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav"></ul>
+    <p>@Html.ValidationSummary(true)</p>
+
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Sistema Vestibular", "Index", "Curso", new { area = "" }, new { @class = "navbar-brand" })
+                @*@Html.ActionLink("Sistema Vestibular", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav"></ul>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="container body-content">
-    @RenderBody()
+    <div class="container body-content">
+        @RenderBody()
 
-    <hr/>
-    <footer>
-        <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-    </footer>
-</div>
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Sistema de Vestibular</p>
+        </footer>
+    </div>
 
-<script src="~/Scripts/jquery-1.12.4.min.js"></script>
-<script src="~/Scripts/bootstrap.min.js"></script>
-<script src="~/Scripts/jquery-ui-1.12.0.min.js"></script>
-@RenderSection("scripts", required: false)
+    <script src="~/Scripts/jquery-1.12.4.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.0.min.js"></script>
+    @RenderSection("scripts", required: false)
 
 </body>
 </html>
