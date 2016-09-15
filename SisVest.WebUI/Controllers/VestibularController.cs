@@ -81,7 +81,7 @@ namespace SisVest.WebUI.Controllers
             try
             {
                 _repository.Inserir(vestibular);
-                TempData["Mensagem"] = "Curso cadastrado com sucesso.";
+                TempData["Mensagem"] = "Vestibular cadastrado com sucesso.";
             }
             catch (Exception ex)
             {

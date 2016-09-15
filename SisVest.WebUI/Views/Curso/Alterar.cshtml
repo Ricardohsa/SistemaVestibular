@@ -6,8 +6,13 @@
 
 <h2>Alterar Curso</h2>
 
+
+
 @using (@Html.BeginForm())
 {
+    HtmlHelper.ClientValidationEnabled = false;
+    HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
+    
     <p>@Html.ValidationSummary(true)</p>
     @Html.EditorForModel()
     <p>
@@ -15,4 +20,6 @@
     </p>
 
 }
-
+<div>
+    @Html.ActionLink("Retornar", "Index")
+</div>

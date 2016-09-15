@@ -74,12 +74,19 @@ namespace SisVest.WebUI.Controllers
 
         public ActionResult Inserir()
         {
+            HtmlHelper.ClientValidationEnabled = false;
+            HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
+
             return View();
         }
 
         [HttpPost]
         public ActionResult Inserir(Curso curso)
         {
+
+            HtmlHelper.ClientValidationEnabled = false;
+            HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
+
             ModelState["ICursoId"].Errors.Clear();
 
             if (!ModelState.IsValid) return View(curso);
