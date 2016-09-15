@@ -1,0 +1,23 @@
+﻿@model SisVest.DomainModel.Entities.Vestibular
+
+@{
+    ViewBag.Title = "Alterar";
+}
+
+<h2>Alterar Vestibular</h2>
+
+@using (@Html.BeginForm())
+{
+    <p>@Html.ValidationSummary(true)</p>
+    @Html.EditorForModel()
+    <p>
+        <input type="submit" value="Alterar" />
+    </p>
+
+}
+
+<script type="text/javascript">
+    $('#DtInicioInscricao').datepicker();
+    $('#DtFimInscricao').datepicker();
+    $('#DtProva').datepicker();
+</script>

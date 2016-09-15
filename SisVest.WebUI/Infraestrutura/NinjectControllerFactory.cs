@@ -3,7 +3,7 @@ using Ninject;
 using System.Web.Mvc;
 using SisVest.DomainModel.Abstract;
 using SisVest.DomainModel.Concrete;
-using SisVest.DomainModel.Entities;
+using SisVest.WebUI.Models;
 
 
 namespace SisVest.WebUI.Infraestrutura
@@ -31,6 +31,8 @@ namespace SisVest.WebUI.Infraestrutura
             _ninjectKernel.Bind<IAdimRepository>().To<EfAdminRepository>();
             _ninjectKernel.Bind<IVestibularRepository>().To<EfVestibularRepository>();
             _ninjectKernel.Bind<ICandidatoRepository>().To<EfCandidatoRepository>();
+            _ninjectKernel.Bind<VestContext>().ToSelf();
+            _ninjectKernel.Bind<CursoModel>().ToSelf();
         }
 
       

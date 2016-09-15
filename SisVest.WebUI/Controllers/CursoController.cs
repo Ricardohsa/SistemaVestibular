@@ -12,31 +12,18 @@ namespace SisVest.WebUI.Controllers
     public class CursoController : Controller
     {
         private ICursoRepository _repository;
+        private CursoModel _cursoModel;
 
-        public CursoController(ICursoRepository cursoRepository)
+        public CursoController(ICursoRepository cursoRepository, CursoModel cursoModel)
         {
             _repository = cursoRepository;
+            _cursoModel = cursoModel;
         }
 
         // GET: Curso
         public ActionResult Index()
         {
-            var result = _repository.Cursos.ToList();
-            IList<CursoModel> cursoModelList = new List<CursoModel>();
-
-            foreach (var curso in result)
-            {
-                cursoModelList.Add( new CursoModel()
-                {
-                    ICursoId = curso.ICursoId,
-                    SDescricao = curso.SDescricao,
-                    IVagas = curso.IVagas,
-                    iTotalCandidatos = curso.CandidatosList.Count,
-                    iTotalCandidatosAprovados = _repository.CandidatosAprovadas(curso.ICursoId).Count()
-                });
-            }
-
-            return View(cursoModelList.ToList());
+            return View(_cursoModel.RetornaTodos().ToList());
         }
 
         public ActionResult Alterar(int id)
@@ -48,11 +35,15 @@ namespace SisVest.WebUI.Controllers
         [HttpPost]
         public ActionResult Alterar(Curso curso)
         {
-            _repository.Alterar(curso);
+            if (ModelState.IsValid)
+            {
+                _repository.Alterar(curso);
+                TempData["Mensagem"] = "Curso alterado com sucesso.";
 
-            TempData["Mensagem"] = "Curso alterado com sucesso.";
+                return RedirectToAction("Index");
+            }
 
-            return View("Index", _repository.Cursos.ToList());
+            return View(curso);
         }
 
         public ActionResult Excluir(int id)
@@ -68,17 +59,41 @@ namespace SisVest.WebUI.Controllers
             try
             {
                 _repository.Excluir(curso.ICursoId);
-
                 TempData["Mensagem"] = "Curso excluido com sucesso.";
-
             }
             catch (Exception ex)
             {
 
                 TempData["Mensagem"] = ex.Message;
             }
-            
-            return View("Index", _repository.Cursos.ToList());
+
+            return RedirectToAction("Index");
+
+        }
+
+
+        public ActionResult Inserir()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Inserir(Curso curso)
+        {
+            ModelState["ICursoId"].Errors.Clear();
+
+            if (!ModelState.IsValid) return View(curso);
+            try
+            {
+                _repository.Inserir(curso);
+                TempData["Mensagem"] = "Curso cadastrado com sucesso.";
+            }
+            catch (Exception ex)
+            {
+                TempData["Mensagem"] = ex.Message;
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }

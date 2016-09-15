@@ -51,7 +51,7 @@ namespace SisVest.DomainModel.Concrete
         public void Alterar(Vestibular vestibular)
         {
             var retorno = from c in Vestibulares
-                          where (c.IVestibularId.Equals(vestibular.IVestibularId) || c.SDescricao.ToUpper().Equals(vestibular.SDescricao) )
+                          where (c.SDescricao.ToUpper().Equals(vestibular.SDescricao) && !c.IVestibularId.Equals(vestibular.IVestibularId))
                           select c;
 
             if (retorno.Any())
@@ -67,7 +67,7 @@ namespace SisVest.DomainModel.Concrete
                          where c.IVestibularId.Equals(iVestibularId)
                          select c;
 
-            if (result.Any())
+            if (result.Count() < 0)
                 throw new InvalidOperationException("Vestibular não localizado no repositório.");
 
             var result2 = (from v in Vestibulares

@@ -1,5 +1,4 @@
-﻿@using SisVest.DomainModel.Entities
-@model List<SisVest.WebUI.Models.CursoModel>
+﻿@model List<SisVest.WebUI.Models.CursoModel>
 
 @{
     ViewBag.Title = "Index";
@@ -7,42 +6,31 @@
 
 
 <h2>Listagem de Cursos</h2>
+
 @if (TempData["Mensagem"] != null)
 {
     <p><strong>@TempData["Mensagem"]</strong> </p>
 }
+<p>
+    @Html.ActionLink("Cadastrar Novo Curso", "Inserir")
+</p>
 
-<table>
-    <tr>
-        <th><strong>Curso</strong></th>
-        <th><strong>Nº Vagas</strong></th>
-        <th><strong>-   Nº Candidatos Inscritos</strong></th>
-        <th><strong>-   Nº Candidatos Aprovados</strong></th>
-        <th><strong>Editar</strong></th>
-        <th><strong>Excluir</strong></th>
-    </tr>
+@{
+    var  grid = new WebGrid(source:Model, rowsPerPage:3);
     
-    @foreach (var curso in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(c => curso.SDescricao)
-            </td>
-            <td>
-                @Html.DisplayFor(c => curso.IVagas)
-            </td>
-            <td>
-                @Html.DisplayFor(c => curso.iTotalCandidatos)
-            </td>
-            <td>
-                @Html.DisplayFor(c => curso.iTotalCandidatosAprovados)
-            </td>
-            <td>
-                @Html.ActionLink("Alterar","Alterar", new {id=curso.ICursoId});
-            </td>
-            <td>
-                @Html.ActionLink("Excluir", "Excluir", new { id = curso.ICursoId });
-            </td>
-        </tr>
-    }
-</table>
+}
+
+@grid.GetHtml(
+    tableStyle: "webgrid-table",
+    headerStyle: "header",
+    footerStyle: "footer",
+
+    columns: grid.Columns(
+        grid.Column("sDescricao", header: "Curso"),
+        grid.Column("iVagas", header: "Vagas"),
+        grid.Column("iTotalCandidatos", header: "Candidatos Inscritos"),
+        grid.Column("iTotalCandidatosAprovados", header: "Candidatos Aprovaos"),
+        grid.Column(header: "Editar", format: (item)=> @Html.ActionLink("Alterar", "Alterar", new { id = item.ICursoId }), canSort: false ),
+        grid.Column(header: "Excluir", format: (item) => @Html.ActionLink("Excluir", "Excluir", new { id = item.ICursoId }), canSort: false))
+ )
+

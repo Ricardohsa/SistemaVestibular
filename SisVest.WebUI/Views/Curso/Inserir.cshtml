@@ -1,17 +1,17 @@
 ﻿@model SisVest.DomainModel.Entities.Curso
 
 @{
-    ViewBag.Title = "Alterar";
+    ViewBag.Title = "Inserir";
 }
 
-<h2>Alterar Curso</h2>
+<h2>Cadastrar novo Curso</h2>
 
 @using (@Html.BeginForm())
 {
     <p>@Html.ValidationSummary(true)</p>
     @Html.EditorForModel()
     <p>
-        <input type="submit" value="Alterar"/>
+        <input type="submit" value="Inserir" />
     </p>
 
 }

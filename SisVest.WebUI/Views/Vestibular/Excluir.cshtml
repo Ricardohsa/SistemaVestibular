@@ -1,0 +1,17 @@
+﻿@model SisVest.DomainModel.Entities.Vestibular
+
+@{
+    ViewBag.Title = "Excluir";
+}
+
+<h2>Excluir Vestibular</h2>
+
+@using (@Html.BeginForm("Excluir", "Vestibular", Model))
+{
+    <p>@Html.ValidationSummary(false)</p>
+    @Html.DisplayForModel()
+    <p>
+        <input type="submit" value="Excluir" />
+    </p>
+
+}

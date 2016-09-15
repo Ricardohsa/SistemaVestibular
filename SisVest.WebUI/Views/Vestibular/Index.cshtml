@@ -1,0 +1,36 @@
+﻿@model IList<SisVest.DomainModel.Entities.Vestibular>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Listagem Vestibulares</h2>
+
+
+@if (TempData["Mensagem"] != null)
+{
+    <p><strong>@TempData["Mensagem"]</strong> </p>
+}
+<p>
+    @Html.ActionLink("Cadastrar Novo Vestibular", "Inserir")
+</p>
+
+@{
+    var grid = new WebGrid(source: Model, rowsPerPage: 5);
+
+}
+
+@grid.GetHtml(
+    tableStyle: "webgrid-table",
+    headerStyle: "header",
+    footerStyle: "footer",
+
+    columns: grid.Columns(
+        grid.Column("sDescricao", header: "Vestibular"),
+        grid.Column("DtInicioInscricao", header: "Inicio da Inscrição", format: @<text>@item.DtInicioInscricao.ToString("dd/MM/yyy")</text>),
+        grid.Column("DtFimInscricao", header: "Fim da Inscrição", format: @<text>@item.DtInicioInscricao.ToString("dd/MM/yyyy")</text>),
+        grid.Column("DtProva", header: "Data da Prova", format: @<text>@item.DtInicioInscricao.ToString("dd/MM/yyyy")</text>),
+        grid.Column(header: "Editar", format: (item) => @Html.ActionLink("Alterar", "Alterar", new { id = item.IVestibularId }), canSort: false),
+        grid.Column(header: "Excluir", format: (item) => @Html.ActionLink("Excluir", "Excluir", new { id = item.IVestibularId }), canSort: false))
+ )
+

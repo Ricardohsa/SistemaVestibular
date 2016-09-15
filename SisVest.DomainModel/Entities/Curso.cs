@@ -12,10 +12,13 @@ namespace SisVest.DomainModel.Entities
         [HiddenInput(DisplayValue = false)]
         public int ICursoId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Campo Descrição é obrigatório")]
+        [Display(Name = "Descrição")]
         public string SDescricao { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Campo Vagas é obrigatório")]
+        [Display(Name = "Vagas")]
+        [Range(1,50, ErrorMessage = "Informe um numero de vagas de 1 a 50")]
         public int IVagas { get; set; }
 
         public virtual ICollection<Candidato> CandidatosList { get; set; }
