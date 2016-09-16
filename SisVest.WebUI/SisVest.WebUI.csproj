@@ -176,9 +176,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infraestrutura\FilterProvider\FilterProviderCustom.cs" />
+    <Compile Include="Infraestrutura\Filter\CustomAutenticacaoAttribute.cs" />
+    <Compile Include="Infraestrutura\Filter\TesteFiltroAttribute.cs" />
     <Compile Include="Infraestrutura\NinjectControllerFactory.cs" />
     <Compile Include="Infraestrutura\Provider\Abstract\IAutenticacaoProvider.cs" />
     <Compile Include="Infraestrutura\Provider\Concrete\CustomAutentication.cs" />
+    <Compile Include="Infraestrutura\NinjectDependecyResolver.cs" />
     <Compile Include="Models\AutenticacaoModel.cs" />
     <Compile Include="Models\CursoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using SisVest.WebUI.Infraestrutura;
+using SisVest.WebUI.Infraestrutura.FilterProvider;
 
 namespace SisVest.WebUI
 {
@@ -15,7 +16,17 @@ namespace SisVest.WebUI
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
-            ControllerBuilder.Current.SetControllerFactory(new NinjectControllerFactory());
+            //Passa a utilziar o NinjectDependecyResolver
+            DependencyResolver.SetResolver(new NinjectDependecyResolver());
+
+            FilterProviders.Providers.Clear();
+            FilterProviders.Providers.Add(new FilterProviderCustom());
+
+            //Injeta controle de dependencia somente nos Controles
+            //ControllerBuilder.Current.SetControllerFactory(new NinjectControllerFactory());
+
+
         }
+
     }
 }

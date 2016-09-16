@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using SisVest.DomainModel.Abstract;
 using SisVest.DomainModel.Entities;
+using SisVest.WebUI.Infraestrutura.Filter;
 using SisVest.WebUI.Infraestrutura.Provider.Abstract;
 using SisVest.WebUI.Models;
 
@@ -24,22 +25,14 @@ namespace SisVest.WebUI.Controllers
         }
 
         // GET: Curso
+        [CustomAutenticacao("administrador")]
         public ActionResult Index()
         {
-            if (!(_autenticacaoProvider.Autenticado && _autenticacaoProvider.UsuarioAutenticado.Grupo == "administrador"))
-
-                HttpContext.Response.StatusCode = 401;
-
             return View(_cursoModel.RetornaTodos().ToList());
-
         }
         
         public ActionResult Alterar(int id)
         {
-            if (!(_autenticacaoProvider.Autenticado && _autenticacaoProvider.UsuarioAutenticado.Grupo == "administrador"))
-
-                HttpContext.Response.StatusCode = 401;
-
             return View(_repository.RetornarPorId(id));
         }
 
@@ -60,10 +53,6 @@ namespace SisVest.WebUI.Controllers
 
         public ActionResult Excluir(int id)
         {
-            if (!(_autenticacaoProvider.Autenticado && _autenticacaoProvider.UsuarioAutenticado.Grupo == "administrador"))
-
-                HttpContext.Response.StatusCode = 401;
-
             return View(_repository.RetornarPorId(id));
         }
 
@@ -87,7 +76,7 @@ namespace SisVest.WebUI.Controllers
 
         }
 
-        
+        [CustomAutenticacao("candidato")]
         public ActionResult Inserir()
         {
             HtmlHelper.ClientValidationEnabled = false;
