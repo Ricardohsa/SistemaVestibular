@@ -177,6 +177,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infraestrutura\NinjectControllerFactory.cs" />
+    <Compile Include="Infraestrutura\Provider\Abstract\IAutenticacaoProvider.cs" />
+    <Compile Include="Infraestrutura\Provider\Concrete\CustomAutentication.cs" />
     <Compile Include="Models\AutenticacaoModel.cs" />
     <Compile Include="Models\CursoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -204,7 +206,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Infraestrutura\Provider\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SisVest.DomainModel\SisVest.DomainModel.csproj">
