@@ -37,10 +37,9 @@ namespace SisVest.WebUI.Controllers
                 {
                     return Redirect(returnUrl ?? Url.Action("Entrar","Autenticacao"));
                 }
-                ModelState.AddModelError("", msgErro);
+                TempData["Mensagem"] = msgErro;
             }
-            ViewBag.Autenticado = _autenticacaoProvider.Autenticado;
-            return View();
+            return RedirectToAction("Entrar");
         }
 
         public ActionResult Sair()

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using SisVest.DomainModel.Abstract;
@@ -11,6 +10,7 @@ using SisVest.WebUI.Models;
 
 namespace SisVest.WebUI.Controllers
 {
+    [CustomAutenticacao("aministrador")]
     public class CursoController : Controller
     {
         private ICursoRepository _repository;
@@ -25,7 +25,6 @@ namespace SisVest.WebUI.Controllers
         }
 
         // GET: Curso
-        [CustomAutenticacao("administrador")]
         public ActionResult Index()
         {
             return View(_cursoModel.RetornaTodos().ToList());
@@ -76,7 +75,6 @@ namespace SisVest.WebUI.Controllers
 
         }
 
-        [CustomAutenticacao("candidato")]
         public ActionResult Inserir()
         {
             HtmlHelper.ClientValidationEnabled = false;

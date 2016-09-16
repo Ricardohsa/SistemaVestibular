@@ -170,6 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AutenticacaoController.cs" />
     <Compile Include="Controllers\CursoController.cs" />
     <Compile Include="Controllers\VestibularController.cs" />
@@ -201,6 +202,7 @@
     <Content Include="Views\Vestibular\Excluir.cshtml" />
     <Content Include="Views\Vestibular\Inserir.cshtml" />
     <Content Include="Views\Autenticacao\Entrar.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace SisVest.DomainModel.Entities
 {
@@ -12,6 +13,7 @@ namespace SisVest.DomainModel.Entities
     public class Admin
     {
         [Key]
+        [HiddenInput(DisplayValue = false)]
         public int IAdminId { get; set; }
 
         [Required]

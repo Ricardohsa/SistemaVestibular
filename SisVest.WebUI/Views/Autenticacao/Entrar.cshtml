@@ -1,6 +1,7 @@
 ﻿@model SisVest.WebUI.Models.AutenticacaoModel
 
 @{
+    Layout = null;
     ViewBag.Title = "Entrar";
 }
 
@@ -19,4 +20,9 @@ else
     <p>Seja Bem Vindo ! @Model.SNomeTratamento </p>
 
     <p>@Html.ActionLink("Sair", "Sair")</p>
+}
+
+@if (TempData["Mensagem"] != null)
+{
+    <p><strong>@TempData["Mensagem"]</strong> </p>
 }

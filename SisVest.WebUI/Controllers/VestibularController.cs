@@ -3,11 +3,13 @@ using System.Linq;
 using System.Web.Mvc;
 using SisVest.DomainModel.Abstract;
 using SisVest.DomainModel.Entities;
+using SisVest.WebUI.Infraestrutura.Filter;
 using SisVest.WebUI.Infraestrutura.Provider.Abstract;
 
 
 namespace SisVest.WebUI.Controllers
 {
+    [CustomAutenticacao("administrador")]
     public class VestibularController : Controller
     {
         private IVestibularRepository _repository;
