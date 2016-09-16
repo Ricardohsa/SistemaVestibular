@@ -3,30 +3,36 @@ using System.Linq;
 using System.Web.Mvc;
 using SisVest.DomainModel.Abstract;
 using SisVest.DomainModel.Entities;
+using SisVest.WebUI.Infraestrutura.Provider.Abstract;
 
 
 namespace SisVest.WebUI.Controllers
 {
-    [Authorize]
     public class VestibularController : Controller
     {
         private IVestibularRepository _repository;
+        private IAutenticacaoProvider _autenticacaoProvider;
 
         
-        public VestibularController(IVestibularRepository vestibularRepository)
+        public VestibularController(IVestibularRepository vestibularRepository, IAutenticacaoProvider autenticacaoProvider)
         {
             _repository = vestibularRepository;
+            _autenticacaoProvider = autenticacaoProvider;
         }
 
         // GET: Curso
         
         public ActionResult Index()
         {
+            if (!(_autenticacaoProvider.Autenticado && _autenticacaoProvider.UsuarioAutenticado.Grupo == "administrador"))
+                HttpContext.Response.StatusCode = 401;
             return View(_repository.Vestibulares.ToList());
         }
 
         public ActionResult Alterar(int id)
         {
+            if (!(_autenticacaoProvider.Autenticado && _autenticacaoProvider.UsuarioAutenticado.Grupo == "administrador"))
+                HttpContext.Response.StatusCode = 401;
             return View(_repository.Vestibulares.Where(v => v.IVestibularId.Equals(id)).FirstOrDefault());
         }
 
@@ -46,6 +52,8 @@ namespace SisVest.WebUI.Controllers
 
         public ActionResult Excluir(int id)
         {
+            if (!(_autenticacaoProvider.Autenticado && _autenticacaoProvider.UsuarioAutenticado.Grupo == "administrador"))
+                HttpContext.Response.StatusCode = 401;
             return View(_repository.Vestibulares.Where(v => v.IVestibularId.Equals(id)) .FirstOrDefault());
         }
 
@@ -70,6 +78,8 @@ namespace SisVest.WebUI.Controllers
 
         public ActionResult Inserir()
         {
+            if (!(_autenticacaoProvider.Autenticado && _autenticacaoProvider.UsuarioAutenticado.Grupo == "administrador"))
+                HttpContext.Response.StatusCode = 401;
             return View();
         }
 

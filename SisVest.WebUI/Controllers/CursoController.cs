@@ -4,32 +4,42 @@ using System.Linq;
 using System.Web.Mvc;
 using SisVest.DomainModel.Abstract;
 using SisVest.DomainModel.Entities;
+using SisVest.WebUI.Infraestrutura.Provider.Abstract;
 using SisVest.WebUI.Models;
 
 
 namespace SisVest.WebUI.Controllers
 {
-    [Authorize]
     public class CursoController : Controller
     {
         private ICursoRepository _repository;
         private CursoModel _cursoModel;
+        private IAutenticacaoProvider _autenticacaoProvider;
         
-        public CursoController(ICursoRepository cursoRepository, CursoModel cursoModel)
+        public CursoController(ICursoRepository cursoRepository, CursoModel cursoModel, IAutenticacaoProvider autenticacaoProvider)
         {
             _repository = cursoRepository;
             _cursoModel = cursoModel;
+            _autenticacaoProvider = autenticacaoProvider;
         }
 
         // GET: Curso
         public ActionResult Index()
         {
+            if (!(_autenticacaoProvider.Autenticado && _autenticacaoProvider.UsuarioAutenticado.Grupo == "administrador"))
+
+                HttpContext.Response.StatusCode = 401;
 
             return View(_cursoModel.RetornaTodos().ToList());
+
         }
         
         public ActionResult Alterar(int id)
         {
+            if (!(_autenticacaoProvider.Autenticado && _autenticacaoProvider.UsuarioAutenticado.Grupo == "administrador"))
+
+                HttpContext.Response.StatusCode = 401;
+
             return View(_repository.RetornarPorId(id));
         }
 
@@ -50,6 +60,10 @@ namespace SisVest.WebUI.Controllers
 
         public ActionResult Excluir(int id)
         {
+            if (!(_autenticacaoProvider.Autenticado && _autenticacaoProvider.UsuarioAutenticado.Grupo == "administrador"))
+
+                HttpContext.Response.StatusCode = 401;
+
             return View(_repository.RetornarPorId(id));
         }
 
@@ -73,11 +87,15 @@ namespace SisVest.WebUI.Controllers
 
         }
 
-
+        
         public ActionResult Inserir()
         {
             HtmlHelper.ClientValidationEnabled = false;
             HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
+
+            if (!(_autenticacaoProvider.Autenticado && _autenticacaoProvider.UsuarioAutenticado.Grupo == "administrador"))
+
+                HttpContext.Response.StatusCode = 401;
 
             return View();
         }

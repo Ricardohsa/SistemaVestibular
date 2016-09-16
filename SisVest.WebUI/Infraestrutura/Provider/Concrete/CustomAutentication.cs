@@ -17,7 +17,7 @@ namespace SisVest.WebUI.Infraestrutura.Provider.Concrete
             _adimRepository = repository;
         }
 
-        public bool Autenticar(AutenticacaoModel autenticacaoModel, out string msgErro, string grupo="Administrador")
+        public bool Autenticar(AutenticacaoModel autenticacaoModel, out string msgErro, string grupo="administrador")
         {
             msgErro = string.Empty;
             var usuario =
@@ -27,7 +27,7 @@ namespace SisVest.WebUI.Infraestrutura.Provider.Concrete
             {
                 msgErro = "Usuário não cadastrado no Sistema";
             }
-            if (usuario.SLogin != autenticacaoModel.Senha)
+            if (usuario.SSenha != autenticacaoModel.Senha)
             {
                 msgErro = "Senha incorreta";
                 return false;
@@ -37,7 +37,8 @@ namespace SisVest.WebUI.Infraestrutura.Provider.Concrete
             {
                 Grupo = grupo,
                 Senha = autenticacaoModel.Senha,
-                Login = autenticacaoModel.Senha
+                Login = autenticacaoModel.Login,
+                SNomeTratamento = usuario.SNomeTratamento
             };
 
             return true;

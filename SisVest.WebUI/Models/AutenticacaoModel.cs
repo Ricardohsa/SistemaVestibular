@@ -13,7 +13,11 @@ namespace SisVest.WebUI.Models
         [DataType(DataType.Password)]
         public string Senha { get; set; }
 
-        [HiddenInput]
+        [HiddenInput(DisplayValue = false)]
         public string Grupo { get; set; }
+
+        [HiddenInput(DisplayValue = false)]
+        public string SNomeTratamento { get; set; }
+
     }
 }

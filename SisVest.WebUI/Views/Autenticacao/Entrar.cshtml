@@ -6,9 +6,17 @@
 
 <h2>Entrar</h2>
 
-@using (@Html.BeginForm())
+@if (!ViewBag.Autenticado)
 {
-    @Html.EditorForModel()
-    <p><input type="submit" value="Entrar"/></p>
+    using (@Html.BeginForm())
+    {
+        @Html.EditorForModel()
+        <p><input type="submit" value="Entrar"/></p>
+    }
+}
+else
+{
+    <p>Seja Bem Vindo ! @Model.SNomeTratamento </p>
 
+    <p>@Html.ActionLink("Sair", "Sair")</p>
 }
