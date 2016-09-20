@@ -16,16 +16,21 @@ namespace SisVest.DomainModel.Entities
         [HiddenInput(DisplayValue = false)]
         public int IAdminId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Login é obrigatório.")]
+        [Display(Name = "Login")]
         public string SLogin { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Senha é obrigatório.")]
+        [Display(Name = "Senha")]
+        [DataType(DataType.Password)]
         public string SSenha { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Nome do usuário é obrigatório.")]
+        [Display(Name = "Nome do Usuário")]
         public string SNomeTratamento { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Email é obrigatório.")]
+        [Display(Name = "Email")]
         public string SEmail { get; set; }
 
         public override bool Equals(object obj)

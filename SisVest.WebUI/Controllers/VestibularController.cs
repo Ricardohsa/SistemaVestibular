@@ -23,18 +23,13 @@ namespace SisVest.WebUI.Controllers
         }
 
         // GET: Curso
-        
         public ActionResult Index()
         {
-            if (!(_autenticacaoProvider.Autenticado && _autenticacaoProvider.UsuarioAutenticado.Grupo == "administrador"))
-                HttpContext.Response.StatusCode = 401;
             return View(_repository.Vestibulares.ToList());
         }
 
         public ActionResult Alterar(int id)
         {
-            if (!(_autenticacaoProvider.Autenticado && _autenticacaoProvider.UsuarioAutenticado.Grupo == "administrador"))
-                HttpContext.Response.StatusCode = 401;
             return View(_repository.Vestibulares.Where(v => v.IVestibularId.Equals(id)).FirstOrDefault());
         }
 
@@ -54,8 +49,6 @@ namespace SisVest.WebUI.Controllers
 
         public ActionResult Excluir(int id)
         {
-            if (!(_autenticacaoProvider.Autenticado && _autenticacaoProvider.UsuarioAutenticado.Grupo == "administrador"))
-                HttpContext.Response.StatusCode = 401;
             return View(_repository.Vestibulares.Where(v => v.IVestibularId.Equals(id)) .FirstOrDefault());
         }
 
@@ -80,8 +73,6 @@ namespace SisVest.WebUI.Controllers
 
         public ActionResult Inserir()
         {
-            if (!(_autenticacaoProvider.Autenticado && _autenticacaoProvider.UsuarioAutenticado.Grupo == "administrador"))
-                HttpContext.Response.StatusCode = 401;
             return View();
         }
 

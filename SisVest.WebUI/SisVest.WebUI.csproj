@@ -165,6 +165,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\passwordStrengthMeter.js" />
     <Content Include="Scripts\ui.datepicker-pt-BR.js" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -203,6 +204,9 @@
     <Content Include="Views\Vestibular\Inserir.cshtml" />
     <Content Include="Views\Autenticacao\Entrar.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Admin\Alterar.cshtml" />
+    <Content Include="Views\Admin\Inserir.cshtml" />
+    <Content Include="Views\Admin\Excluir.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

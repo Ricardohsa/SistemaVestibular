@@ -1,0 +1,18 @@
+﻿@model SisVest.DomainModel.Entities.Admin
+
+@{
+    ViewBag.Title = "Inserir";
+}
+
+<h2>Cadastrar novo Administrador</h2>
+
+@using (@Html.BeginForm())
+{
+    @Html.EditorForModel()
+
+    <p><input type="button" value="Voltar" id="btnvoltar" /></p>
+    <p><input type="submit" value="Inserir" /></p>
+}
+<div>
+    @Html.ActionLink("Retornar", "Index")
+</div>

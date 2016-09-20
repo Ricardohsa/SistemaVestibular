@@ -19,17 +19,17 @@ namespace SisVest.DomainModel.Entities
 
         [Required(ErrorMessage = "Data de Inicio deve ser informada.")]
         [Display(Name = "Inicio da Inscrição")]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DtInicioInscricao { get; set; }
 
         [Required(ErrorMessage = "Data de Final deve ser informada.")]
         [Display(Name = "Fim da Inscrição")]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DtFimInscricao { get; set; }
 
         [Required(ErrorMessage = "Data da Prova deve ser informada.")]
         [Display(Name = "Data da Prova")]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DtProva { get; set; }
 
         public virtual ICollection<Candidato> CandidatosList { get; set; }

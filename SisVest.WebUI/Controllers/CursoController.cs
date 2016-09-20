@@ -10,7 +10,7 @@ using SisVest.WebUI.Models;
 
 namespace SisVest.WebUI.Controllers
 {
-    [CustomAutenticacao("aministrador")]
+    [CustomAutenticacao("administrador")]
     public class CursoController : Controller
     {
         private ICursoRepository _repository;
@@ -77,12 +77,8 @@ namespace SisVest.WebUI.Controllers
 
         public ActionResult Inserir()
         {
-            HtmlHelper.ClientValidationEnabled = false;
-            HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
-
-            if (!(_autenticacaoProvider.Autenticado && _autenticacaoProvider.UsuarioAutenticado.Grupo == "administrador"))
-
-                HttpContext.Response.StatusCode = 401;
+            //HtmlHelper.ClientValidationEnabled = false;
+            //HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
 
             return View();
         }
@@ -91,8 +87,8 @@ namespace SisVest.WebUI.Controllers
         public ActionResult Inserir(Curso curso)
         {
 
-            HtmlHelper.ClientValidationEnabled = false;
-            HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
+            //HtmlHelper.ClientValidationEnabled = false;
+            //HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
 
             ModelState["ICursoId"].Errors.Clear();
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Web;
-using Microsoft.SqlServer.Server;
 using SisVest.DomainModel.Abstract;
 using SisVest.WebUI.Infraestrutura.Provider.Abstract;
 using SisVest.WebUI.Models;
@@ -21,11 +20,12 @@ namespace SisVest.WebUI.Infraestrutura.Provider.Concrete
         {
             msgErro = string.Empty;
             var usuario =
-                _adimRepository.Admins.Where(usr => usr.SLogin.Equals(autenticacaoModel.Login)).FirstOrDefault();
+                _adimRepository.Admins.Where(u => u.SLogin.Equals(autenticacaoModel.Login)).FirstOrDefault();
 
             if ( usuario == null)
             {
                 msgErro = "Usuário não cadastrado no Sistema";
+                return false;
             }
             if (usuario.SSenha != autenticacaoModel.Senha)
             {

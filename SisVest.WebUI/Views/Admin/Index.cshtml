@@ -7,24 +7,25 @@
 <h2>@ViewBag.Title</h2>
 
 
-    @*<p>@Html.ActionLink("Cadastrar Novo Administtador", "Inserir")</p>*@
+<p>
+    @Html.ActionLink("Cadastrar Novo Administrador", "Inserir")
+</p>
 
-    @{
-        var grid = new WebGrid(source: Model, rowsPerPage: 5);
+@{
+    var grid = new WebGrid(source: Model, rowsPerPage: 5);
 
-    }
+}
 
-    @grid.GetHtml(
+@grid.GetHtml(
     tableStyle: "webgrid-table",
     headerStyle: "header",
     footerStyle: "footer",
 
     columns: grid.Columns(
-        grid.Column("SLogin", header: "Login"),
-        grid.Column("SNomeTramamento", header: "Nome do Usuário"),
-        grid.Column("SEmail", header: "Email"),
-
- grid.Column(header: "Editar", format: (item) => @Html.ActionLink("Alterar", "Alterar", new { id = item.IAdminId }), canSort: false),
- grid.Column(header: "Excluir", format: (item) => @Html.ActionLink("Excluir", "Excluir", new { id = item.IAdminId }), canSort: false))
+    grid.Column("SLogin", header: "Login"),
+    grid.Column("SNomeTratamento", header: "Nome do Usuário"),
+    grid.Column("SEmail", header: "Email"),
+    grid.Column(header: "Editar", format: (item) => @Html.ActionLink("Alterar", "Alterar", new { id = item.IAdminId }), canSort: false),
+    grid.Column(header: "Excluir", format: (item) => @Html.ActionLink("Excluir", "Excluir", new { id = item.IAdminId }), canSort: false))
  )
 

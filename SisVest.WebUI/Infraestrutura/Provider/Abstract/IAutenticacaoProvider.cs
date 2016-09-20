@@ -1,5 +1,4 @@
-﻿using System.Dynamic;
-using SisVest.WebUI.Models;
+﻿using SisVest.WebUI.Models;
 
 namespace SisVest.WebUI.Infraestrutura.Provider.Abstract
 {

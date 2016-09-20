@@ -1,0 +1,19 @@
+﻿@model SisVest.DomainModel.Entities.Admin
+
+@{
+    ViewBag.Title = "Excluir Administrador";
+}
+
+
+<h2> @ViewBag.Title</h2>
+
+@using (@Html.BeginForm("Excluir", "Admin", Model))
+{
+
+    @Html.DisplayForModel()
+
+    <p><input type="submit" value="Excluir" /></p>
+
+}
+
+

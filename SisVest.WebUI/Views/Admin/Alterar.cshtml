@@ -1,0 +1,23 @@
+﻿@model SisVest.DomainModel.Entities.Admin
+
+@{
+    ViewBag.Title = "Alterar";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+
+@using (@Html.BeginForm())
+{
+    HtmlHelper.ClientValidationEnabled = false;
+    HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
+
+
+    @Html.EditorForModel()
+    <p><input type="submit" value="Alterar" /></p>
+
+}
+<div>
+    @Html.ActionLink("Retornar", "Index")
+</div>
