@@ -79,10 +79,9 @@ namespace SisVest.WebUI.Controllers
         [HttpPost]
         public ActionResult Inserir(Vestibular vestibular)
         {
-            ModelState["IVestibularId"].Errors.Clear();
+            //ModelState["IVestibularId"].Errors.Clear();
 
             if (!ModelState.IsValid) return View(vestibular);
-
             try
             {
                 _repository.Inserir(vestibular);
@@ -95,5 +94,6 @@ namespace SisVest.WebUI.Controllers
 
             return RedirectToAction("Index");
         }
-    }
+        
+}
 }
