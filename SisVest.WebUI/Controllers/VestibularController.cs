@@ -42,7 +42,7 @@ namespace SisVest.WebUI.Controllers
 
             _repository.Alterar(vestibular);
 
-            TempData["Mensagem"] = "Vesrtibular alterado com sucesso.";
+            TempData["Mensagem"] = "Vestibular alterado com sucesso.";
 
             return RedirectToAction("Index");
         }
@@ -60,7 +60,7 @@ namespace SisVest.WebUI.Controllers
             try
             {
                 _repository.Excluir(vestibular.IVestibularId);
-                TempData["Mensagem"] = "O Vestibular " + vestibular.SDescricao + "excluido com sucesso."; 
+                TempData["Mensagem"] = "O Vestibular " + vestibular.SDescricao + " excluido com sucesso."; 
             }
             catch (Exception ex)
             {
