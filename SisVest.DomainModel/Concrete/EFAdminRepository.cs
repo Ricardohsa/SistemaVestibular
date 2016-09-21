@@ -28,7 +28,7 @@ namespace SisVest.DomainModel.Concrete
                          &&!a.IAdminId.Equals(a.IAdminId)
                          select a;
 
-            if (result.Any())
+            if (result.Count() > 0)
                 throw new InvalidOperationException("Já existe um Administrador cadastrado com este Login ou Email.");
 
             _vestContext.Entry(admin).State = EntityState.Modified;
@@ -41,7 +41,7 @@ namespace SisVest.DomainModel.Concrete
                 where a.IAdminId.Equals(iCandidatoId)
                 select a;
 
-            if (result.Count() < 0)
+            if (!result.Any())
                 throw new InvalidOperationException("Administrador não localizado no repositório.");
             
             _vestContext.Admins.Remove(result.FirstOrDefault());

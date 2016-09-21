@@ -29,6 +29,9 @@ namespace SisVest.DomainModel.Concrete
             if (retorno.Any())
                 throw new InvalidOperationException("Curso já cadastrado com esta Descrição.");
 
+            if (curso.IVagas < 1 || curso.IVagas > 50)
+                throw new InvalidOperationException("Informe o número de vagas entre 1 e 50.");
+
             _vestContext.Cursos.Add(curso);
             _vestContext.SaveChanges();
         }
@@ -42,6 +45,10 @@ namespace SisVest.DomainModel.Concrete
             if (retorno.Any())
                 throw new InvalidOperationException("Já existe um Curso cadastrado com essa descrição.");
 
+
+            if (curso.IVagas < 1 || curso.IVagas > 50)
+                throw new InvalidOperationException("Informe o número de vagas entre 1 e 50.");
+
             _vestContext.Entry(curso).State = EntityState.Modified;
             _vestContext.SaveChanges();
         }
@@ -52,7 +59,7 @@ namespace SisVest.DomainModel.Concrete
                 where c.ICursoId.Equals(iCursoId)
                 select c;
 
-            if (result.Count() < 0)
+            if (!result.Any())
                 throw new InvalidOperationException("Curso não localizado no repositório.");
 
             _vestContext.Cursos.Remove(result.FirstOrDefault());
@@ -73,5 +80,7 @@ namespace SisVest.DomainModel.Concrete
 
             return result;
         }
+       
     }
+      
 }

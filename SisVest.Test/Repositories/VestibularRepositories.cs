@@ -234,7 +234,7 @@ namespace SisVest.Test.Repositories
             var cursoInserir = new Curso()
             {
                 SDescricao = "Analise de Sistemas",
-                IVagas = 100
+                IVagas = 50
             };
 
             _vestContext.Cursos.Add(cursoInserir);
@@ -297,7 +297,7 @@ namespace SisVest.Test.Repositories
             var cursoInserir = new Curso()
             {
                 SDescricao = "Analise de Sistemas",
-                IVagas = 100
+                IVagas = 45
             };
 
             _vestContext.Cursos.Add(cursoInserir);

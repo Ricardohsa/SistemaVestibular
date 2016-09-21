@@ -40,7 +40,7 @@ namespace SisVest.Test.Repositories
             _cursoInserir = (new Curso()
             {
                 SDescricao = "Analise de Sistemas",
-                IVagas = 100
+                IVagas = 50
             });
 
             _vestContext.Cursos.Add(_cursoInserir);
@@ -101,9 +101,8 @@ namespace SisVest.Test.Repositories
         [TestMethod]
         public void Pode_Consultar_Usando_LINQ_Repositorio_Test()
         {
-            //Ambiente    
-            _vestContext.Cursos.Add(_cursoInserir);
-            _vestContext.SaveChanges();
+           
+           
             //Ação
 
             var cursos = _cursoRepository.Cursos;
@@ -122,19 +121,23 @@ namespace SisVest.Test.Repositories
         public void Pode_Inserir_Test()
         {
             //Ambiente
-
+            var cursoInserir2 = (new Curso()
+            {
+                SDescricao = "Letras 20211",
+                IVagas = 45
+            });
 
             //Ação
 
-            _cursoRepository.Inserir(_cursoInserir);
+            _cursoRepository.Inserir(cursoInserir2);
             _vestContext.SaveChanges();
 
             var retorno = (from a in _cursoRepository.Cursos
-                           where a.SDescricao.Equals(_cursoInserir.SDescricao)
+                           where a.SDescricao.Equals(cursoInserir2.SDescricao)
                            select a).FirstOrDefault();
 
             //Assertivas            
-            Assert.AreEqual(retorno, _cursoInserir);
+            Assert.AreEqual(retorno, cursoInserir2);
 
         }
 
@@ -147,7 +150,7 @@ namespace SisVest.Test.Repositories
             var cursoInserir2 = (new Curso()
             {
                 SDescricao = _cursoInserir.SDescricao,
-                IVagas = 100
+                IVagas = 45
             });
 
             _cursoRepository.Inserir(_cursoInserir);
@@ -164,12 +167,18 @@ namespace SisVest.Test.Repositories
         public void Pode_Altera_Test()
         {
             //Ambiente    
-            _cursoRepository.Inserir(_cursoInserir);
+            var curso_alterar = new Curso()
+            {
+                SDescricao = "BIOLOGIA",
+                IVagas = 5
+            };
 
-            var descriaoEsperada = _cursoInserir.SDescricao;
+            _cursoRepository.Inserir(curso_alterar);
+
+            var descriaoEsperada = curso_alterar.SDescricao;
 
             var cursoAlterar = (from a in _cursoRepository.Cursos
-                                where a.ICursoId == _cursoInserir.ICursoId
+                                where a.ICursoId == curso_alterar.ICursoId
                                 select a).FirstOrDefault();
 
             cursoAlterar.SDescricao = "Ciencias da Computação";
@@ -178,7 +187,7 @@ namespace SisVest.Test.Repositories
             _cursoRepository.Alterar(cursoAlterar);
 
             var retorno = (from a in _cursoRepository.Cursos
-                           where a.ICursoId.Equals(_cursoInserir.ICursoId)
+                           where a.ICursoId.Equals(curso_alterar.ICursoId)
                            select a).FirstOrDefault();
             //Assertivas
             Assert.AreEqual(retorno.ICursoId, cursoAlterar.ICursoId);
@@ -206,41 +215,13 @@ namespace SisVest.Test.Repositories
 
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
-        public void Nao_Pode_Alterar_Curso_Com_Mesma_Descricao_Ja_Persistida_Test()
-        {
-            //Ambiente
-            _cursoRepository.Inserir(_cursoInserir);
-
-            var cursoInserir2 = new Curso()
-            {
-                SDescricao = "POS ENGENHARIA SOFTWARE"
-            };
-
-            _cursoRepository.Inserir(cursoInserir2);
-
-            var cursoAlterar = (from c in _cursoRepository.Cursos
-                                where c.ICursoId.Equals(_cursoInserir.ICursoId)
-                                select c).FirstOrDefault();
-
-            cursoAlterar.SDescricao = cursoInserir2.SDescricao;
-
-            //Ação
-
-            _cursoRepository.Alterar(cursoAlterar);
-            //Assertivas      
-
-        }
 
 
         [TestMethod]
         public void Pode_Excluir_Test()
         {
             //Ambiente
-            _cursoRepository.Inserir(_cursoInserir);
-
-
+           
             //Ação
             _cursoRepository.Excluir(_cursoInserir.ICursoId);
 
@@ -273,7 +254,7 @@ namespace SisVest.Test.Repositories
         public void Retornar_Curso_Por_ID_Test()
         {
             //Ambiente
-            _cursoRepository.Inserir(_cursoInserir);
+           
 
             //Ação
 
@@ -290,7 +271,7 @@ namespace SisVest.Test.Repositories
         public void Pode_Retornar_Candidatos_Aprovados_Test()
         {
             //Ambiente
-            
+
 
             //Ação
             var result = _cursoRepository.CandidatosAprovadas(_cursoInserir.ICursoId);
